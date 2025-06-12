@@ -1,53 +1,119 @@
 <!DOCTYPE html>
 <html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Academic Planner</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Academic Planner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
 
-<body class="font-sans">
-    <header class="text-center p-4 bg-blue-500 dark:bg-blue-700 text-white">
-        <h1 class="text-3xl font-bold">Welcome to Your Study Space!</h1>
-        <p id="quote" class="text-lg mt-2">"Success is the sum of small efforts repeated day in and day out."</p>
-        <button onclick="changeQuote()" class="mt-2 bg-white text-blue-700 px-3 py-1 rounded">Change Quote</button>
-        <button onclick="toggleDarkMode()" class="ml-2 bg-gray-700 text-white px-3 py-1 rounded">Toggle Dark Mode</button>
-    </header>
-    
-<nav class="flex justify-center space-x-4 my-4">
-    <a href="index.html" class="text-blue-500 hover:underline">Home</a>
-    <a href="subjects.html" class="text-blue-500 hover:underline">Subjects</a>
-    <a href="todo.html" class="text-blue-500 hover:underline">To-Do</a>
-    <a href="calendar.html" class="text-blue-500 hover:underline">Calendar</a>
-    <a href="timer.html" class="text-blue-500 hover:underline">Timer</a>
-</nav>
+<body class="transition duration-300">
+  <!-- Header -->
+  <header class="text-center p-6 bg-gray-800 dark:bg-gray-950 text-white shadow-md">
+    <h1 class="text-4xl font-bold mb-2">🎓 Student Academic Planner</h1>
+    <p id="quote" class="text-md italic text-gray-300">“Plan your work and work your plan.”</p>
+    <div class="mt-4 space-x-2">
+      <button onclick="changeQuote()" class="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600">🎯 Inspire Me</button>
+      <button onclick="toggleDarkMode()" class="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600">🌓 Toggle Theme</button>
+    </div>
+  </header>
 
-    <main class="p-6 text-center">
-        <h2 class="text-2xl font-semibold mb-2">Organize. Focus. Succeed.</h2>
-        <p class="text-md">This planner helps you manage your academics effectively with a clean and minimal interface.</p>
-    </main>
-    <footer class="text-center p-4 bg-blue-500 dark:bg-blue-700 text-white">&copy; 2025 Student Planner by Manas</footer>
-    <script src="script.js"></script>
-    
-<script>
+  <!-- Navigation Cards -->
+  <main class="p-6 max-w-6xl mx-auto">
+    <h2 class="text-2xl font-semibold text-center mb-8">Navigate Your Toolkit</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Subjects -->
+      <a href="subjects.html" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 hover:scale-105 transition transform border dark:border-gray-700">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">📚</div>
+          <div>
+            <h3 class="text-xl font-semibold">01. Subjects</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">View grades, credits, and course info.</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- To-Do List -->
+      <a href="todo.html" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 hover:scale-105 transition transform border dark:border-gray-700">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">✅</div>
+          <div>
+            <h3 class="text-xl font-semibold">02. To-Do</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Track daily tasks and priorities.</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Calendar -->
+      <a href="calendar.html" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 hover:scale-105 transition transform border dark:border-gray-700">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">🗓️</div>
+          <div>
+            <h3 class="text-xl font-semibold">03. Calendar</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Visualize events and exam schedules.</p>
+          </div>
+        </div>
+      </a>
+
+      <!-- Timer -->
+      <a href="timer.html" class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-6 hover:scale-105 transition transform border dark:border-gray-700">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">⏱️</div>
+          <div>
+            <h3 class="text-xl font-semibold">04. Timer</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Use Pomodoro technique for focus.</p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center p-4 bg-gray-800 dark:bg-gray-950 text-gray-300 mt-8">
+    &copy; 2025 Student Planner by Manas 🚀 | All rights reserved.
+  </footer>
+
+  <!-- Scripts -->
+  <script>
     function toggleDarkMode() {
-        const html = document.documentElement;
-        html.classList.toggle('dark');
-        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     }
-    window.onload = () => {
-        if (localStorage.getItem('theme') === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-    };
-</script>
 
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    };
+
+    function changeQuote() {
+      const quotes = [
+        "Discipline is the bridge between goals and accomplishment.",
+        "Push yourself, because no one else is going to do it for you.",
+        "The secret of getting ahead is getting started.",
+        "You are capable of amazing things.",
+        "Small steps every day lead to big results.",
+        "Dream big, work hard, stay focused."
+      ];
+      const quote = document.getElementById("quote");
+      quote.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    }
+  </script>
 </body>
 </html>
+
