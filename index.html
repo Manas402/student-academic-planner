@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Academic Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+</head>
+
+<body class="font-sans">
+    <header class="text-center p-4 bg-blue-500 dark:bg-blue-700 text-white">
+        <h1 class="text-3xl font-bold">Welcome to Your Study Space!</h1>
+        <p id="quote" class="text-lg mt-2">"Success is the sum of small efforts repeated day in and day out."</p>
+        <button onclick="changeQuote()" class="mt-2 bg-white text-blue-700 px-3 py-1 rounded">Change Quote</button>
+        <button onclick="toggleDarkMode()" class="ml-2 bg-gray-700 text-white px-3 py-1 rounded">Toggle Dark Mode</button>
+    </header>
+    
+<nav class="flex justify-center space-x-4 my-4">
+    <a href="index.html" class="text-blue-500 hover:underline">Home</a>
+    <a href="subjects.html" class="text-blue-500 hover:underline">Subjects</a>
+    <a href="todo.html" class="text-blue-500 hover:underline">To-Do</a>
+    <a href="calendar.html" class="text-blue-500 hover:underline">Calendar</a>
+    <a href="timer.html" class="text-blue-500 hover:underline">Timer</a>
+</nav>
+
+    <main class="p-6 text-center">
+        <h2 class="text-2xl font-semibold mb-2">Organize. Focus. Succeed.</h2>
+        <p class="text-md">This planner helps you manage your academics effectively with a clean and minimal interface.</p>
+    </main>
+    <footer class="text-center p-4 bg-blue-500 dark:bg-blue-700 text-white">&copy; 2025 Student Planner by Manas</footer>
+    <script src="script.js"></script>
+    
+<script>
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+    window.onload = () => {
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    };
+</script>
+
+</body>
+</html>

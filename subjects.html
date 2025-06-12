@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects & Grades</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Your Subjects</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="subjects.html">Subjects</a>
+            <a href="todo.html">To-Do</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="timer.html">Timer</a>
+        </nav>
+    </header>
+    <main>
+        <section id="subjects"></section>
+    </main>
+    <script>
+        const subjects = [
+            {"name": "Mathematics", "grade": "A"},
+            {"name": "Physics", "grade": "B+"},
+            {"name": "Computer Science", "grade": "A+"},
+            {"name": "English", "grade": "A"}
+        ];
+        const section = document.getElementById('subjects');
+        subjects.forEach(sub => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<h3>${sub.name}</h3><p>Grade: ${sub.grade}</p>`;
+            section.appendChild(div);
+        });
+    </script>
+</body>
+</html>

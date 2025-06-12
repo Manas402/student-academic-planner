@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>To-Do List</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="subjects.html">Subjects</a>
+            <a href="todo.html">To-Do</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="timer.html">Timer</a>
+        </nav>
+    </header>
+    <main>
+        <input type="text" id="taskInput" placeholder="New Task">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList"></ul>
+    </main>
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const taskList = document.getElementById('taskList');
+            if (taskInput.value.trim() === '') return;
+            const li = document.createElement('li');
+            li.textContent = taskInput.value;
+            li.onclick = () => li.classList.toggle('done');
+            const del = document.createElement('button');
+            del.textContent = '✕';
+            del.onclick = () => taskList.removeChild(li);
+            li.appendChild(del);
+            taskList.appendChild(li);
+            taskInput.value = '';
+        }
+    </script>
+</body>
+</html>

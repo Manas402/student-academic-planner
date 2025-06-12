@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Pomodoro Timer</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="subjects.html">Subjects</a>
+            <a href="todo.html">To-Do</a>
+            <a href="calendar.html">Calendar</a>
+            <a href="timer.html">Timer</a>
+        </nav>
+    </header>
+    <main>
+        <h2 id="time">25:00</h2>
+        <button onclick="startTimer()">Start</button>
+        <button onclick="resetTimer()">Reset</button>
+    </main>
+    <script>
+        let timer;
+        let minutes = 25, seconds = 0;
+        function updateDisplay() {
+            document.getElementById('time').textContent = 
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+        }
+        function startTimer() {
+            if (timer) return;
+            timer = setInterval(() => {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(timer);
+                        alert('Pomodoro session over!');
+                        return;
+                    }
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+                updateDisplay();
+            }, 1000);
+        }
+        function resetTimer() {
+            clearInterval(timer);
+            timer = null;
+            minutes = 25;
+            seconds = 0;
+            updateDisplay();
+        }
+        updateDisplay();
+    </script>
+</body>
+</html>
