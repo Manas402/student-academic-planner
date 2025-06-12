@@ -1,234 +1,102 @@
+<!-- todo.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Academic To-Do List</title>
-  <style>
-    :root {
-      --bg-color: #ffffff;
-      --text-color: #333;
-      --header-bg: #007acc;
-      --button-bg: #007acc;
-      --task-bg: #e3f2fd;
-      --task-done-bg: #c8e6c9;
-      --input-border: #007acc;
-    }
-
-    body.dark {
-      --bg-color: #121212;
-      --text-color: #f0f0f0;
-      --header-bg: #1f1f1f;
-      --button-bg: #333;
-      --task-bg: #2a2a2a;
-      --task-done-bg: #33691e;
-      --input-border: #888;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: var(--bg-color);
-      color: var(--text-color);
-      transition: 0.4s;
-    }
-
-    header {
-      background: var(--header-bg);
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      position: relative;
-    }
-
-    nav a {
-      margin: 0 10px;
-      color: white;
-      text-decoration: none;
-    }
-
-    #toggleTheme {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      background: none;
-      border: 2px solid white;
-      border-radius: 20px;
-      padding: 5px 10px;
-      color: white;
-      cursor: pointer;
-    }
-
-    main {
-      padding: 2rem;
-      max-width: 600px;
-      margin: auto;
-      background: var(--bg-color);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: var(--header-bg);
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 1rem;
-    }
-
-    input, button {
-      padding: 10px;
-      border: 2px solid var(--input-border);
-      border-radius: 10px;
-      font-size: 16px;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
-    button {
-      background-color: var(--button-bg);
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      filter: brightness(0.9);
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: var(--task-bg);
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 8px;
-      transition: background 0.3s;
-    }
-
-    li.done {
-      text-decoration: line-through;
-      background-color: var(--task-done-bg);
-    }
-
-    .task-info {
-      flex: 1;
-    }
-
-    .task-date-time {
-      font-size: 0.85rem;
-      color: #777;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .actions input[type="checkbox"] {
-      transform: scale(1.2);
-    }
-
-    .actions button {
-      background: red;
-      border: none;
-      color: white;
-      font-size: 18px;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      line-height: 0;
-      cursor: pointer;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <header>
-    <h1>Academic Planner</h1>
-    <button id="toggleTheme">🌙</button>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="subjects.html">Subjects</a>
-      <a href="todo.html">To-Do</a>
-      <a href="calendar.html">Calendar</a>
-      <a href="timer.html">Timer</a>
-    </nav>
+<body class="font-sans transition duration-300">
+  <header class="text-center p-6 bg-gray-800 dark:bg-gray-950 text-white shadow-md">
+    <h1 class="text-3xl font-bold mb-2">📝 To-Do List</h1>
+    <button onclick="toggleDarkMode()" class="btn">🌓 Toggle Theme</button>
   </header>
 
-  <main>
-    <h2>📋 To-Do List</h2>
-    <div class="form-group">
-      <input type="text" id="taskInput" placeholder="Enter your task">
-      <input type="date" id="taskDate">
-      <input type="time" id="taskTime">
-      <button onclick="addTask()">Add Task</button>
+  <main class="max-w-xl mx-auto p-6">
+    <div class="mb-4">
+      <input id="taskInput" type="text" placeholder="Enter task..." class="input w-full mb-2" />
+      <input id="taskDate" type="date" class="input w-full mb-2" />
+      <input id="taskTime" type="time" class="input w-full mb-2" />
+      <button onclick="addTask()" class="btn w-full">Add Task</button>
     </div>
-    <ul id="taskList"></ul>
+    <ul id="taskList" class="space-y-3"></ul>
   </main>
 
   <script>
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+      loadTasks();
+    };
+
     function addTask() {
-      const taskInput = document.getElementById('taskInput');
-      const taskDate = document.getElementById('taskDate');
-      const taskTime = document.getElementById('taskTime');
-      const taskList = document.getElementById('taskList');
+      const text = document.getElementById('taskInput').value.trim();
+      const date = document.getElementById('taskDate').value;
+      const time = document.getElementById('taskTime').value;
+      if (!text) return;
 
-      const taskName = taskInput.value.trim();
-      const date = taskDate.value;
-      const time = taskTime.value;
-
-      if (!taskName) return;
-
-      const li = document.createElement('li');
-
-      const info = document.createElement('div');
-      info.className = 'task-info';
-      info.innerHTML = `<strong>${taskName}</strong>
-        <div class="task-date-time">📅 ${date || 'No Date'} 🕒 ${time || 'No Time'}</div>`;
-
-      const actions = document.createElement('div');
-      actions.className = 'actions';
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.onchange = () => li.classList.toggle('done');
-
-      const del = document.createElement('button');
-      del.textContent = '✕';
-      del.onclick = () => taskList.removeChild(li);
-
-      actions.appendChild(checkbox);
-      actions.appendChild(del);
-
-      li.appendChild(info);
-      li.appendChild(actions);
-
-      taskList.appendChild(li);
-
-      taskInput.value = '';
-      taskDate.value = '';
-      taskTime.value = '';
+      const task = { text, date, time, done: false };
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+      document.getElementById('taskInput').value = '';
+      document.getElementById('taskDate').value = '';
+      document.getElementById('taskTime').value = '';
     }
 
-    // Dark Mode Toggle
-    const toggleBtn = document.getElementById('toggleTheme');
-    toggleBtn.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      toggleBtn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
-    });
+    function renderTasks() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+      tasks.forEach((task, index) => {
+        const li = document.createElement('li');
+        li.className = `p-4 rounded-lg shadow transition-all ${task.done ? 'bg-green-100 dark:bg-green-800' : 'bg-gray-200 dark:bg-gray-700'}`;
+        li.innerHTML = `
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-medium">${task.text}</p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">${task.date || 'No date'} @ ${task.time || 'No time'}</p>
+            </div>
+            <div class="space-x-2">
+              <button onclick="toggleDone(${index})" class="text-green-600 dark:text-green-400">✔️</button>
+              <button onclick="deleteTask(${index})" class="text-red-500">✖️</button>
+            </div>
+          </div>
+        `;
+        taskList.appendChild(li);
+      });
+    }
+
+    function toggleDone(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+      tasks[index].done = !tasks[index].done;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function deleteTask(index) {
+      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+      tasks.splice(index, 1);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function loadTasks() {
+      renderTasks();
+    }
   </script>
 </body>
 </html>
