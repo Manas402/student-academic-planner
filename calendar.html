@@ -1,32 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Academic Calendar 2025</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    }
+  </script>
 </head>
-<body>
-    <header>
-        <h1>Calendar</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="subjects.html">Subjects</a>
-            <a href="todo.html">To-Do</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="timer.html">Timer</a>
-        </nav>
-    </header>
-    <main>
-        <section class="calendar">
-            <h2>June 2025</h2>
-            <ul>
-                <li>5 - Physics Assignment</li>
-                <li>10 - Math Test</li>
-                <li>18 - Project Submission</li>
-                <li>25 - Semester Review</li>
-            </ul>
-        </section>
-    </main>
+<body class="font-sans">
+  <header class="bg-blue-600 dark:bg-blue-800 text-white py-4 text-center shadow">
+    <h1 class="text-3xl font-bold">Academic Calendar 2025</h1>
+    <nav class="mt-2 space-x-4">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="subjects.html" class="hover:underline">Subjects</a>
+      <a href="todo.html" class="hover:underline">To-Do</a>
+      <a href="calendar.html" class="underline font-semibold">Calendar</a>
+      <a href="timer.html" class="hover:underline">Timer</a>
+    </nav>
+  </header>
+
+  <main class="p-6 space-y-12">
+    <!-- Template for each month -->
+    <!-- Copy this section for each month with updated days and events -->
+
+    <!-- Example for June 2025 -->
+    <section>
+      <h2 class="text-2xl font-bold text-center mb-4">June 2025</h2>
+      <div class="grid grid-cols-7 gap-2 text-center text-sm sm:text-base">
+        <div class="font-bold">Sun</div><div class="font-bold">Mon</div><div class="font-bold">Tue</div>
+        <div class="font-bold">Wed</div><div class="font-bold">Thu</div><div class="font-bold">Fri</div><div class="font-bold">Sat</div>
+
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+        <div class="p-2 border">1</div><div class="p-2 border">2</div><div class="p-2 border">3</div><div class="p-2 border">4</div>
+        <div class="p-2 border bg-yellow-100 text-yellow-800 rounded">5<br><small>Physics Assignment</small></div>
+        <div class="p-2 border">6</div><div class="p-2 border">7</div>
+
+        <div class="p-2 border">8</div><div class="p-2 border">9</div>
+        <div class="p-2 border bg-red-100 text-red-800 rounded">10<br><small>Math Test</small></div>
+        <div class="p-2 border">11</div><div class="p-2 border">12</div><div class="p-2 border">13</div><div class="p-2 border">14</div>
+
+        <div class="p-2 border">15</div><div class="p-2 border">16</div><div class="p-2 border">17</div>
+        <div class="p-2 border bg-green-100 text-green-800 rounded">18<br><small>Project Submission</small></div>
+        <div class="p-2 border">19</div><div class="p-2 border">20</div><div class="p-2 border">21</div>
+
+        <div class="p-2 border">22</div><div class="p-2 border">23</div><div class="p-2 border">24</div>
+        <div class="p-2 border bg-blue-100 text-blue-800 rounded">25<br><small>Semester Review</small></div>
+        <div class="p-2 border">26</div><div class="p-2 border">27</div><div class="p-2 border">28</div>
+
+        <div class="p-2 border">29</div><div class="p-2 border">30</div>
+      </div>
+    </section>
+
+    <!-- Add more sections like above for January to May and July to December 2025 -->
+
+  </main>
+
+  <footer class="text-center text-sm text-gray-500 py-4">
+    Color Legend: 
+    <span class="bg-yellow-100 px-2 py-1 rounded">Assignment</span>
+    <span class="bg-red-100 px-2 py-1 rounded">Test</span>
+    <span class="bg-green-100 px-2 py-1 rounded">Project</span>
+    <span class="bg-blue-100 px-2 py-1 rounded">Review</span><br>
+    © 2025 Academic Planner by Manas
+  </footer>
 </body>
 </html>
