@@ -1,59 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoro Timer</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
 </head>
-<body>
-    <header>
-        <h1>Pomodoro Timer</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="subjects.html">Subjects</a>
-            <a href="todo.html">To-Do</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="timer.html">Timer</a>
-        </nav>
-    </header>
-    <main>
-        <h2 id="time">25:00</h2>
-        <button onclick="startTimer()">Start</button>
-        <button onclick="resetTimer()">Reset</button>
-    </main>
-    <script>
-        let timer;
-        let minutes = 25, seconds = 0;
-        function updateDisplay() {
-            document.getElementById('time').textContent = 
-                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-        }
-        function startTimer() {
-            if (timer) return;
-            timer = setInterval(() => {
-                if (seconds === 0) {
-                    if (minutes === 0) {
-                        clearInterval(timer);
-                        alert('Pomodoro session over!');
-                        return;
-                    }
-                    minutes--;
-                    seconds = 59;
-                } else {
-                    seconds--;
-                }
-                updateDisplay();
-            }, 1000);
-        }
-        function resetTimer() {
+<body class="font-sans flex flex-col min-h-screen">
+
+  <header class="bg-blue-600 dark:bg-blue-800 text-white py-4 text-center shadow">
+    <h1 class="text-3xl font-bold">Pomodoro Timer</h1>
+    <nav class="mt-2 space-x-4">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="subjects.html" class="hover:underline">Subjects</a>
+      <a href="todo.html" class="hover:underline">To-Do</a>
+      <a href="calendar.html" class="hover:underline">Calendar</a>
+      <a href="timer.html" class="underline font-semibold">Timer</a>
+    </nav>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center gap-6 p-8">
+    <h2 id="time" class="text-6xl font-mono">25:00</h2>
+    <div class="space-x-4">
+      <button onclick="startTimer()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-xl shadow">
+        Start
+      </button>
+      <button onclick="resetTimer()" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-xl shadow">
+        Reset
+      </button>
+    </div>
+    <button onclick="toggleDarkMode()" class="mt-4 px-4 py-1 bg-gray-700 text-white rounded-md">
+      Toggle Dark Mode
+    </button>
+  </main>
+
+  <footer class="text-center text-sm text-gray-500 py-4">Made with 💻 by Manas</footer>
+
+  <script>
+    let timer;
+    let minutes = 25, seconds = 0;
+
+    function updateDisplay() {
+      document.getElementById('time').textContent =
+        String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+    }
+
+    function startTimer() {
+      if (timer) return;
+      timer = setInterval(() => {
+        if (seconds === 0) {
+          if (minutes === 0) {
             clearInterval(timer);
-            timer = null;
-            minutes = 25;
-            seconds = 0;
-            updateDisplay();
+            alert('Pomodoro session over!');
+            return;
+          }
+          minutes--;
+          seconds = 59;
+        } else {
+          seconds--;
         }
         updateDisplay();
-    </script>
-</body>
-</html>
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timer);
+      timer = null;
+      minutes = 25;
+      seconds = 0;
+      updateDisplay();
+    }
+
+    function toggleDarkMode() {
