@@ -1,31 +1,69 @@
-<!-- todo.html -->
 <!DOCTYPE html>
-<html lang="en" class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+<html lang="en" class="bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>To-Do List</title>
+  <title>To-Do List - Academic Planner</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = { darkMode: 'class' };
+    tailwind.config = {
+      darkMode: 'class'
+    };
   </script>
-  <link rel="stylesheet" href="styles.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="styles.css" rel="stylesheet" />
+  <style>
+    body {
+      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="font-sans transition duration-300">
-  <header class="text-center p-6 bg-gray-800 dark:bg-gray-950 text-white shadow-md">
-    <h1 class="text-3xl font-bold mb-2">📝 To-Do List</h1>
-    <button onclick="toggleDarkMode()" class="btn">🌓 Toggle Theme</button>
+<body class="transition duration-500">
+  <header class="text-center p-8 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 text-white shadow-xl animate-fade-in">
+    <h1 class="text-5xl font-extrabold mb-2">✅ Your Daily To-Do</h1>
+    <p class="italic text-gray-100">Organize your day, one step at a time.</p>
+    <div class="mt-4 space-x-2">
+      <button onclick="toggleDarkMode()" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded shadow hover:scale-105 transition">🌓 Toggle Theme</button>
+    </div>
   </header>
 
-  <main class="max-w-xl mx-auto p-6">
-    <div class="mb-4">
-      <input id="taskInput" type="text" placeholder="Enter task..." class="input w-full mb-2" />
-      <input id="taskDate" type="date" class="input w-full mb-2" />
-      <input id="taskTime" type="time" class="input w-full mb-2" />
-      <button onclick="addTask()" class="btn w-full">Add Task</button>
-    </div>
-    <ul id="taskList" class="space-y-3"></ul>
+  <main class="max-w-4xl mx-auto p-6">
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4 text-green-600 dark:text-green-300">🎯 Must Do Today</h2>
+      <form id="task-form" class="mb-6 flex gap-2">
+        <input type="text" id="task-input" class="flex-1 px-4 py-2 rounded-lg border focus:outline-none dark:bg-gray-700 dark:border-gray-600" placeholder="Add a new task..." />
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Add</button>
+      </form>
+      <div id="task-list" class="grid gap-4"></div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-300">📅 Subject Timetable</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-blue-500">
+          <h3 class="text-lg font-semibold mb-1">9:00 AM - 10:00 AM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Mathematics (Room 204)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-indigo-500">
+          <h3 class="text-lg font-semibold mb-1">10:15 AM - 11:15 AM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Physics (Room 102)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-purple-500">
+          <h3 class="text-lg font-semibold mb-1">11:30 AM - 12:30 PM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Chemistry (Lab 1)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-pink-500">
+          <h3 class="text-lg font-semibold mb-1">2:00 PM - 3:00 PM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Computer Science (Lab 3)</p>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <footer class="text-center p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white mt-12 shadow-inner">
+    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Stay Productive 🚀
+  </footer>
 
   <script>
     function toggleDarkMode() {
@@ -33,6 +71,7 @@
       html.classList.toggle('dark');
       localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     }
+
     window.onload = () => {
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
@@ -40,62 +79,52 @@
       loadTasks();
     };
 
-    function addTask() {
-      const text = document.getElementById('taskInput').value.trim();
-      const date = document.getElementById('taskDate').value;
-      const time = document.getElementById('taskTime').value;
-      if (!text) return;
+    const form = document.getElementById("task-form");
+    const taskInput = document.getElementById("task-input");
+    const taskList = document.getElementById("task-list");
 
-      const task = { text, date, time, done: false };
-      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const taskText = taskInput.value.trim();
+      if (taskText !== "") {
+        addTask(taskText);
+        saveTask(taskText);
+        taskInput.value = "";
+      }
+    });
+
+    function addTask(text) {
+      const div = document.createElement("div");
+      div.className = "bg-white dark:bg-gray-800 border-l-4 border-green-500 shadow-md p-4 rounded-lg flex justify-between items-center hover:scale-[1.02] transition-all";
+      div.innerHTML = `
+        <span class="font-medium">${text}</span>
+        <button onclick="deleteTask(this)" class="bg-red-500 text-white px-3 py-1 text-xs rounded-full hover:bg-red-600">Delete</button>
+      `;
+      taskList.appendChild(div);
+    }
+
+    function deleteTask(button) {
+      const div = button.parentElement;
+      const text = div.querySelector("span").textContent;
+      div.remove();
+      removeTask(text);
+    }
+
+    function saveTask(task) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
       tasks.push(task);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      renderTasks();
-      document.getElementById('taskInput').value = '';
-      document.getElementById('taskDate').value = '';
-      document.getElementById('taskTime').value = '';
-    }
-
-    function renderTasks() {
-      const taskList = document.getElementById('taskList');
-      taskList.innerHTML = '';
-      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-
-      tasks.forEach((task, index) => {
-        const li = document.createElement('li');
-        li.className = `p-4 rounded-lg shadow transition-all ${task.done ? 'bg-green-100 dark:bg-green-800' : 'bg-gray-200 dark:bg-gray-700'}`;
-        li.innerHTML = `
-          <div class="flex justify-between items-center">
-            <div>
-              <p class="font-medium">${task.text}</p>
-              <p class="text-sm text-gray-600 dark:text-gray-300">${task.date || 'No date'} @ ${task.time || 'No time'}</p>
-            </div>
-            <div class="space-x-2">
-              <button onclick="toggleDone(${index})" class="text-green-600 dark:text-green-400">✔️</button>
-              <button onclick="deleteTask(${index})" class="text-red-500">✖️</button>
-            </div>
-          </div>
-        `;
-        taskList.appendChild(li);
-      });
-    }
-
-    function toggleDone(index) {
-      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-      tasks[index].done = !tasks[index].done;
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      renderTasks();
-    }
-
-    function deleteTask(index) {
-      const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-      tasks.splice(index, 1);
-      localStorage.setItem('tasks', JSON.stringify(tasks));
-      renderTasks();
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
 
     function loadTasks() {
-      renderTasks();
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks.forEach(addTask);
+    }
+
+    function removeTask(taskToRemove) {
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      tasks = tasks.filter(task => task !== taskToRemove);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
   </script>
 </body>
