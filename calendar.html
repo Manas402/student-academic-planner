@@ -1,69 +1,71 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
+<html lang="en" class="bg-gradient-to-tr from-pink-100 via-yellow-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subjects - Academic Planner</title>
+  <title>Calendar - Student Planner</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      darkMode: 'class'
-    };
+    tailwind.config = { darkMode: 'class' };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="styles.css" rel="stylesheet" />
   <style>
     body {
-      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
       font-family: 'Inter', sans-serif;
+      background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png');
+    }
+    .fade-in {
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body class="transition duration-500">
-  <header class="text-center p-8 bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 text-white shadow-xl animate-fade-in">
-    <h1 class="text-4xl font-extrabold mb-2">📚 Subject Overview</h1>
-    <p class="italic text-gray-100">Track your academic performance and stay informed.</p>
+  <header class="text-center p-8 bg-gradient-to-r from-indigo-500 via-pink-500 to-red-400 text-white shadow-xl fade-in">
+    <h1 class="text-4xl font-extrabold mb-2">🗓️ Academic Calendar</h1>
+    <p class="italic text-gray-100">Keep track of your key academic events.</p>
     <div class="mt-4 space-x-2">
       <button onclick="toggleDarkMode()" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded shadow hover:scale-105 transition">🌓 Toggle Theme</button>
     </div>
   </header>
 
   <main class="max-w-6xl mx-auto p-6">
-    <!-- Chart Section -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-300 text-center">📊 Academic Scores</h2>
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-        <canvas id="subjectChart"></canvas>
-      </div>
-    </section>
-
-    <!-- Subject Details -->
-    <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-red-500">
-        <h3 class="text-xl font-bold">Mathematics</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 92 | Credits: 4</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-blue-500">
-        <h3 class="text-xl font-bold">Physics</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 85 | Credits: 3</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-green-500">
-        <h3 class="text-xl font-bold">Chemistry</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 89 | Credits: 3</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-yellow-500">
-        <h3 class="text-xl font-bold">English</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 78 | Credits: 2</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-pink-500">
-        <h3 class="text-xl font-bold">Computer Science</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 95 | Credits: 4</p>
+    <section class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 fade-in">
+      <h2 class="text-2xl font-bold mb-4 text-purple-700 dark:text-purple-300">📅 Semester Schedule</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-gradient-to-br from-blue-100 to-blue-200 dark:from-blue-800 dark:to-blue-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">🧪 Physics Lab</h3>
+          <p>Every Monday - 10:00 AM</p>
+        </div>
+        <div class="bg-gradient-to-br from-green-100 to-green-200 dark:from-green-800 dark:to-green-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">📖 English Lecture</h3>
+          <p>Every Tuesday - 11:00 AM</p>
+        </div>
+        <div class="bg-gradient-to-br from-red-100 to-red-200 dark:from-red-800 dark:to-red-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">🧮 Mathematics</h3>
+          <p>Every Wednesday - 2:00 PM</p>
+        </div>
+        <div class="bg-gradient-to-br from-yellow-100 to-yellow-200 dark:from-yellow-800 dark:to-yellow-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">💻 Computer Science</h3>
+          <p>Every Thursday - 9:00 AM</p>
+        </div>
+        <div class="bg-gradient-to-br from-purple-100 to-purple-200 dark:from-purple-800 dark:to-purple-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">🧑‍🔬 Chemistry Lab</h3>
+          <p>Every Friday - 3:00 PM</p>
+        </div>
+        <div class="bg-gradient-to-br from-pink-100 to-pink-200 dark:from-pink-800 dark:to-pink-900 p-4 rounded-xl shadow-md">
+          <h3 class="text-lg font-semibold">📝 Exams & Assignments</h3>
+          <p>Check back regularly for updates!</p>
+        </div>
       </div>
     </section>
   </main>
 
-  <footer class="text-center p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white mt-12 shadow-inner">
-    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Keep Learning 🚀
+  <footer class="text-center p-6 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white mt-12 shadow-inner">
+    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Plan Ahead, Achieve More 🚀
   </footer>
 
   <script>
@@ -77,36 +79,6 @@
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
       }
-
-      const ctx = document.getElementById('subjectChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Mathematics', 'Physics', 'Chemistry', 'English', 'Computer Science'],
-          datasets: [{
-            label: 'Score',
-            data: [92, 85, 89, 78, 95],
-            backgroundColor: [
-              'rgba(244, 67, 54, 0.7)',
-              'rgba(33, 150, 243, 0.7)',
-              'rgba(76, 175, 80, 0.7)',
-              'rgba(255, 235, 59, 0.7)',
-              'rgba(233, 30, 99, 0.7)'
-            ],
-            borderRadius: 8,
-            borderSkipped: false
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100
-            }
-          }
-        }
-      });
     };
   </script>
 </body>
