@@ -1,42 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Academic To-Do List</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+      color: #333;
+    }
+
+    header {
+      background: #007acc;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    nav a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+    }
+
+    main {
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #007acc;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    input, button {
+      padding: 10px;
+      border: 2px solid #007acc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007acc;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #005f99;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #e3f2fd;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    li.done {
+      text-decoration: line-through;
+      background-color: #c8e6c9;
+    }
+
+    .task-info {
+      flex: 1;
+    }
+
+    .task-date-time {
+      font-size: 0.85rem;
+      color: #555;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .actions input[type="checkbox"] {
+      transform: scale(1.2);
+    }
+
+    .actions button {
+      background: red;
+      border: none;
+      color: white;
+      font-size: 18px;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      line-height: 0;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>To-Do List</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="subjects.html">Subjects</a>
-            <a href="todo.html">To-Do</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="timer.html">Timer</a>
-        </nav>
-    </header>
-    <main>
-        <input type="text" id="taskInput" placeholder="New Task">
-        <button onclick="addTask()">Add Task</button>
-        <ul id="taskList"></ul>
-    </main>
-    <script>
-        function addTask() {
-            const taskInput = document.getElementById('taskInput');
-            const taskList = document.getElementById('taskList');
-            if (taskInput.value.trim() === '') return;
-            const li = document.createElement('li');
-            li.textContent = taskInput.value;
-            li.onclick = () => li.classList.toggle('done');
-            const del = document.createElement('button');
-            del.textContent = '✕';
-            del.onclick = () => taskList.removeChild(li);
-            li.appendChild(del);
-            taskList.appendChild(li);
-            taskInput.value = '';
-        }
-    </script>
+  <header>
+    <h1>Academic Planner</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="subjects.html">Subjects</a>
+      <a href="todo.html">To-Do</a>
+      <a href="calendar.html">Calendar</a>
+      <a href="timer.html">Timer</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>📋 To-Do List</h2>
+    <div class="form-group">
+      <input type="text" id="taskInput" placeholder="Enter your task">
+      <input type="date" id="taskDate">
+      <input type="time" id="taskTime">
+      <button onclick="addTask()">Add Task</button>
+    </div>
+    <ul id="taskList"></ul>
+  </main>
+
+  <script>
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskDate = document.getElementById('taskDate');
+      const taskTime = document.getElementById('taskTime');
+      const taskList = document.getElementById('taskList');
+
+      const taskName = taskInput.value.trim();
+      const date = taskDate.value;
+      const time = taskTime.value;
+
+      if (!taskName) return;
+
+      const li = document.createElement('li');
+
+      const info = document.createElement('div');
+      info.className = 'task-info';
+      info.innerHTML = `<strong>${taskName}</strong>
+        <div class="task-date-time">📅 ${date || 'No Date'} 🕒 ${time || 'No Time'}</div>`;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.onchange = () => li.classList.toggle('done');
+
+      const del = document.createElement('button');
+      del.textContent = '✕';
+      del.onclick = () => taskList.removeChild(li);
+
+      actions.appendChild(checkbox);
+      actions.appendChild(del);
+
+      li.appendChild(info);
+      li.appendChild(actions);
+
+      taskList.appendChild(li);
+
+      taskInput.value = '';
+      taskDate.value = '';
+      taskTime.value = '';
+    }
+  </script>
 </body>
 </html>
