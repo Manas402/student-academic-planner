@@ -1,40 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subjects & Grades</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>To-Do List - Academic Planner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="styles.css" rel="stylesheet" />
+  <style>
+    body {
+      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body>
-    <header>
-        <h1>Your Subjects</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="subjects.html">Subjects</a>
-            <a href="todo.html">To-Do</a>
-            <a href="calendar.html">Calendar</a>
-            <a href="timer.html">Timer</a>
-        </nav>
-    </header>
-    <main>
-        <section id="subjects"></section>
-    </main>
-    <script>
-        const subjects = [
-            {"name": "Mathematics", "grade": "A"},
-            {"name": "Physics", "grade": "B+"},
-            {"name": "Computer Science", "grade": "A+"},
-            {"name": "English", "grade": "A"}
-        ];
-        const section = document.getElementById('subjects');
-        subjects.forEach(sub => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `<h3>${sub.name}</h3><p>Grade: ${sub.grade}</p>`;
-            section.appendChild(div);
-        });
-    </script>
-    
+<body class="transition duration-500">
+  <header class="text-center p-8 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 text-white shadow-xl animate-fade-in">
+    <h1 class="text-5xl font-extrabold mb-2">✅ Your Daily To-Do</h1>
+    <p class="italic text-gray-100">Organize your day, one step at a time.</p>
+    <div class="mt-4 space-x-2">
+      <button onclick="toggleDarkMode()" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded shadow hover:scale-105 transition">🌓 Toggle Theme</button>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6">
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4 text-green-600 dark:text-green-300">🎯 Must Do Today</h2>
+      <div class="grid gap-4">
+        <div class="bg-white dark:bg-gray-800 border-l-4 border-green-500 shadow-md p-4 rounded-lg flex justify-between items-center hover:scale-[1.02] transition-all">
+          <span class="font-medium">Complete Math Assignment</span>
+          <span class="bg-green-500 text-white px-3 py-1 text-xs rounded-full">Due Today</span>
+        </div>
+        <div class="bg-white dark:bg-gray-800 border-l-4 border-yellow-500 shadow-md p-4 rounded-lg flex justify-between items-center hover:scale-[1.02] transition-all">
+          <span class="font-medium">Revise Physics Notes</span>
+          <span class="bg-yellow-500 text-white px-3 py-1 text-xs rounded-full">Pending</span>
+        </div>
+        <div class="bg-white dark:bg-gray-800 border-l-4 border-red-500 shadow-md p-4 rounded-lg flex justify-between items-center hover:scale-[1.02] transition-all">
+          <span class="font-medium">Prepare for Chemistry Quiz</span>
+          <span class="bg-red-500 text-white px-3 py-1 text-xs rounded-full">Urgent</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-300">📅 Subject Timetable</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-blue-500">
+          <h3 class="text-lg font-semibold mb-1">9:00 AM - 10:00 AM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Mathematics (Room 204)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-indigo-500">
+          <h3 class="text-lg font-semibold mb-1">10:15 AM - 11:15 AM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Physics (Room 102)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-purple-500">
+          <h3 class="text-lg font-semibold mb-1">11:30 AM - 12:30 PM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Chemistry (Lab 1)</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-pink-500">
+          <h3 class="text-lg font-semibold mb-1">2:00 PM - 3:00 PM</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300">Computer Science (Lab 3)</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white mt-12 shadow-inner">
+    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Stay Productive 🚀
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+    };
+  </script>
 </body>
 </html>
