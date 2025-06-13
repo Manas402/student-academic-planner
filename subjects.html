@@ -3,78 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subjects - ManasPlannerPro</title>
+  <title>ManasPlannerPro - Subject Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          animation: {
+            fadeInUp: 'fadeInUp 1s ease-out',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: 0, transform: 'translateY(20px)' },
+              '100%': { opacity: 1, transform: 'translateY(0)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     body {
-      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
       font-family: 'Inter', sans-serif;
-    }
-    .nav-btn {
-      @apply px-4 py-2 rounded-xl font-semibold shadow hover:scale-105 transition;
+      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
     }
   </style>
 </head>
 <body class="transition duration-500">
+  <!-- Navigation Bar -->
+  <nav class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white shadow-md">
+    <div class="flex items-center space-x-3">
+      <span class="text-2xl font-bold animate-fade-in">📘 ManasPlannerPro</span>
+    </div>
+    <ul class="hidden md:flex space-x-6 text-lg font-semibold">
+      <li><a href="index.html" class="hover:text-yellow-300">Home</a></li>
+      <li><a href="todo.html" class="hover:text-yellow-300">To-Do</a></li>
+      <li><a href="calendar.html" class="hover:text-yellow-300">Calendar</a></li>
+      <li><a href="timer.html" class="hover:text-yellow-300">Timer</a></li>
+      <li><a href="subjects.html" class="text-yellow-300 underline">Subjects</a></li>
+    </ul>
+    <button onclick="toggleDarkMode()" class="px-4 py-2 rounded bg-white text-gray-900 font-bold hover:bg-gray-200 transition">🌓</button>
+  </nav>
 
-  <!-- Header -->
-  <header class="text-center p-8 bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 text-white shadow-xl">
-    <h1 class="text-4xl font-extrabold mb-2">📚 Subject Overview</h1>
-    <p class="italic text-gray-100">Track your academic performance and stay informed.</p>
-    <div class="mt-4 space-x-2">
-      <button onclick="toggleDarkMode()" class="bg-white text-gray-800 font-semibold px-4 py-2 rounded shadow hover:scale-105 transition">🌓 Toggle Theme</button>
-    </div>
-    <!-- Navigation Options -->
-    <div class="mt-6 flex justify-center flex-wrap gap-4">
-      <a href="index.html" class="nav-btn bg-indigo-600 text-white">🏠 Home</a>
-      <a href="calendar.html" class="nav-btn bg-pink-500 text-white">🗓️ Calendar</a>
-      <a href="todo.html" class="nav-btn bg-green-500 text-white">✅ To-Do</a>
-      <a href="timer.html" class="nav-btn bg-yellow-500 text-white">⏱️ Timer</a>
-    </div>
+  <!-- Hero Section -->
+  <header class="text-center py-12 bg-gradient-to-br from-purple-400 via-pink-400 to-orange-400 text-white shadow-lg">
+    <h1 class="text-5xl font-extrabold mb-4 animate-fadeInUp">📊 Subject Insights Dashboard</h1>
+    <p class="text-lg italic">Visualize your academic progress. Analyze. Improve. Excel.</p>
   </header>
 
-  <!-- Main Content -->
-  <main class="max-w-6xl mx-auto p-6">
-    <!-- Chart Section -->
-    <section class="mb-12">
-      <h2 class="text-2xl font-bold mb-6 text-purple-600 dark:text-purple-300 text-center">📊 Academic Scores</h2>
-      <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
-        <canvas id="subjectChart"></canvas>
+  <!-- Main Section -->
+  <main class="max-w-7xl mx-auto p-8">
+    <!-- Graph Section -->
+    <section class="mb-16 animate-fadeInUp">
+      <h2 class="text-3xl font-bold text-center mb-6 text-purple-700 dark:text-purple-300">📈 Performance Graph</h2>
+      <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+        <canvas id="academicChart" class="w-full"></canvas>
       </div>
     </section>
 
-    <!-- Subject Details -->
-    <section class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-red-500">
-        <h3 class="text-xl font-bold">Mathematics</h3>
+    <!-- Subject Cards -->
+    <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-red-400 bg-white dark:bg-gray-800">
+        <h3 class="text-2xl font-bold">Mathematics</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">Score: 92 | Credits: 4</p>
+        <p class="mt-2">🔍 Focus on Integration & Probability</p>
       </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-blue-500">
-        <h3 class="text-xl font-bold">Physics</h3>
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-blue-400 bg-white dark:bg-gray-800">
+        <h3 class="text-2xl font-bold">Physics</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">Score: 85 | Credits: 3</p>
+        <p class="mt-2">🔬 Strengthen concepts in Modern Physics</p>
       </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-green-500">
-        <h3 class="text-xl font-bold">Chemistry</h3>
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-green-400 bg-white dark:bg-gray-800">
+        <h3 class="text-2xl font-bold">Chemistry</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">Score: 89 | Credits: 3</p>
+        <p class="mt-2">⚗️ Improve Organic Chemistry modules</p>
       </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-yellow-500">
-        <h3 class="text-xl font-bold">English</h3>
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-yellow-400 bg-white dark:bg-gray-800">
+        <h3 class="text-2xl font-bold">English</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">Score: 78 | Credits: 2</p>
+        <p class="mt-2">📘 Expand vocabulary & writing skills</p>
       </div>
-      <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-md border-l-4 border-pink-500">
-        <h3 class="text-xl font-bold">Computer Science</h3>
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-pink-400 bg-white dark:bg-gray-800">
+        <h3 class="text-2xl font-bold">Computer Science</h3>
         <p class="text-sm text-gray-600 dark:text-gray-300">Score: 95 | Credits: 4</p>
+        <p class="mt-2">💻 Focus on mastering C & Data Structures</p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="text-center p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white mt-12 shadow-inner">
-    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Keep Learning 🚀
+  <footer class="text-center py-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white">
+    <p class="text-sm">&copy; 2025 🔥 <strong>ManasPlannerPro</strong> | Designed to Inspire | Built to Achieve 🚀</p>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Chart Script -->
   <script>
     function toggleDarkMode() {
       const html = document.documentElement;
@@ -87,22 +112,18 @@
         document.documentElement.classList.add('dark');
       }
 
-      const ctx = document.getElementById('subjectChart').getContext('2d');
+      const ctx = document.getElementById('academicChart').getContext('2d');
       new Chart(ctx, {
         type: 'bar',
         data: {
           labels: ['Mathematics', 'Physics', 'Chemistry', 'English', 'Computer Science'],
           datasets: [{
-            label: 'Score',
+            label: 'Academic Score',
             data: [92, 85, 89, 78, 95],
             backgroundColor: [
-              'rgba(244, 67, 54, 0.8)',
-              'rgba(33, 150, 243, 0.8)',
-              'rgba(76, 175, 80, 0.8)',
-              'rgba(255, 235, 59, 0.8)',
-              'rgba(233, 30, 99, 0.8)'
+              '#EF4444', '#3B82F6', '#10B981', '#FACC15', '#EC4899'
             ],
-            borderRadius: 10,
+            borderRadius: 12,
             borderSkipped: false
           }]
         },
@@ -117,7 +138,7 @@
           plugins: {
             legend: {
               labels: {
-                color: '#fff'
+                color: '#888'
               }
             }
           }
