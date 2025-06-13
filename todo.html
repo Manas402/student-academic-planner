@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
+<html lang="en" class="text-gray-900 dark:text-white">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -16,10 +16,27 @@
     body {
       background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
       font-family: 'Inter', sans-serif;
+      transition: background 0.5s ease;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-blend-mode: multiply;
+        opacity: 0.95;
+      }
     }
   </style>
 </head>
-<body class="transition duration-500">
+<body class="transition duration-500 bg-gradient-to-br from-pink-100 via-yellow-100 to-purple-100 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+
+  <!-- ✅ Navigation Bar -->
+  <nav class="bg-gray-900 text-white p-4 shadow-md flex justify-center space-x-4 text-sm sm:text-base">
+    <a href="index.html" class="hover:text-yellow-300">🏠 Home</a>
+    <a href="subjects.html" class="hover:text-yellow-300">📚 Subjects</a>
+    <a href="todo.html" class="hover:text-yellow-300">📝 To-Do</a>
+    <a href="calendar.html" class="hover:text-yellow-300">📅 Calendar</a>
+    <a href="timer.html" class="hover:text-yellow-300">⏳ Timer</a>
+  </nav>
+
   <header class="text-center p-8 bg-gradient-to-r from-green-400 via-blue-400 to-purple-500 text-white shadow-xl animate-fade-in">
     <h1 class="text-5xl font-extrabold mb-2">✅ Your Daily To-Do</h1>
     <p class="italic text-gray-100">Organize your day, one step at a time.</p>
