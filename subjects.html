@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
+<html lang="en" class="bg-gray-900 text-white">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,8 +11,14 @@
       darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+          colors: {
+            accent: '#6366F1'
+          },
           animation: {
-            fadeInUp: 'fadeInUp 1s ease-out',
+            fadeInUp: 'fadeInUp 1s ease-out'
           },
           keyframes: {
             fadeInUp: {
@@ -28,28 +34,27 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-image: url('https://www.transparenttextures.com/patterns/graphy.png');
     }
   </style>
 </head>
-<body class="transition duration-500">
+<body class="transition duration-500 bg-gray-900 text-white">
   <!-- Navigation Bar -->
-  <nav class="flex justify-between items-center px-6 py-4 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white shadow-md">
+  <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white shadow-md">
     <div class="flex items-center space-x-3">
-      <span class="text-2xl font-bold animate-fade-in">📘 ManasPlannerPro</span>
+      <span class="text-2xl font-extrabold animate-fade-in">📘 ManasPlannerPro</span>
     </div>
     <ul class="hidden md:flex space-x-6 text-lg font-semibold">
-      <li><a href="index.html" class="hover:text-yellow-300">Home</a></li>
-      <li><a href="todo.html" class="hover:text-yellow-300">To-Do</a></li>
-      <li><a href="calendar.html" class="hover:text-yellow-300">Calendar</a></li>
-      <li><a href="timer.html" class="hover:text-yellow-300">Timer</a></li>
-      <li><a href="subjects.html" class="text-yellow-300 underline">Subjects</a></li>
+      <li><a href="index.html" class="hover:text-accent">Home</a></li>
+      <li><a href="todo.html" class="hover:text-accent">To-Do</a></li>
+      <li><a href="calendar.html" class="hover:text-accent">Calendar</a></li>
+      <li><a href="timer.html" class="hover:text-accent">Timer</a></li>
+      <li><a href="subjects.html" class="text-accent underline">Subjects</a></li>
     </ul>
     <button onclick="toggleDarkMode()" class="px-4 py-2 rounded bg-white text-gray-900 font-bold hover:bg-gray-200 transition">🌓</button>
   </nav>
 
   <!-- Hero Section -->
-  <header class="text-center py-12 bg-gradient-to-br from-purple-400 via-pink-400 to-orange-400 text-white shadow-lg">
+  <header class="text-center py-12 bg-gray-800 text-white shadow-lg">
     <h1 class="text-5xl font-extrabold mb-4 animate-fadeInUp">📊 Subject Insights Dashboard</h1>
     <p class="text-lg italic">Visualize your academic progress. Analyze. Improve. Excel.</p>
   </header>
@@ -58,44 +63,44 @@
   <main class="max-w-7xl mx-auto p-8">
     <!-- Graph Section -->
     <section class="mb-16 animate-fadeInUp">
-      <h2 class="text-3xl font-bold text-center mb-6 text-purple-700 dark:text-purple-300">📈 Performance Graph</h2>
-      <div class="bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+      <h2 class="text-3xl font-bold text-center mb-6 text-accent">📈 Performance Graph</h2>
+      <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
         <canvas id="academicChart" class="w-full"></canvas>
       </div>
     </section>
 
     <!-- Subject Cards -->
     <section class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <div class="p-6 rounded-xl shadow-lg border-l-8 border-red-400 bg-white dark:bg-gray-800">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-red-400 bg-gray-800">
         <h3 class="text-2xl font-bold">Mathematics</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 92 | Credits: 4</p>
+        <p class="text-sm text-gray-300">Score: 92 | Credits: 4</p>
         <p class="mt-2">🔍 Focus on Integration & Probability</p>
       </div>
-      <div class="p-6 rounded-xl shadow-lg border-l-8 border-blue-400 bg-white dark:bg-gray-800">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-blue-400 bg-gray-800">
         <h3 class="text-2xl font-bold">Physics</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 85 | Credits: 3</p>
+        <p class="text-sm text-gray-300">Score: 85 | Credits: 3</p>
         <p class="mt-2">🔬 Strengthen concepts in Modern Physics</p>
       </div>
-      <div class="p-6 rounded-xl shadow-lg border-l-8 border-green-400 bg-white dark:bg-gray-800">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-green-400 bg-gray-800">
         <h3 class="text-2xl font-bold">Chemistry</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 89 | Credits: 3</p>
+        <p class="text-sm text-gray-300">Score: 89 | Credits: 3</p>
         <p class="mt-2">⚗️ Improve Organic Chemistry modules</p>
       </div>
-      <div class="p-6 rounded-xl shadow-lg border-l-8 border-yellow-400 bg-white dark:bg-gray-800">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-yellow-400 bg-gray-800">
         <h3 class="text-2xl font-bold">English</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 78 | Credits: 2</p>
+        <p class="text-sm text-gray-300">Score: 78 | Credits: 2</p>
         <p class="mt-2">📘 Expand vocabulary & writing skills</p>
       </div>
-      <div class="p-6 rounded-xl shadow-lg border-l-8 border-pink-400 bg-white dark:bg-gray-800">
+      <div class="p-6 rounded-xl shadow-lg border-l-8 border-pink-400 bg-gray-800">
         <h3 class="text-2xl font-bold">Computer Science</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-300">Score: 95 | Credits: 4</p>
+        <p class="text-sm text-gray-300">Score: 95 | Credits: 4</p>
         <p class="mt-2">💻 Focus on mastering C & Data Structures</p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="text-center py-6 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 text-white">
+  <footer class="text-center py-6 bg-gray-800 text-white">
     <p class="text-sm">&copy; 2025 🔥 <strong>ManasPlannerPro</strong> | Designed to Inspire | Built to Achieve 🚀</p>
   </footer>
 
@@ -138,7 +143,7 @@
           plugins: {
             legend: {
               labels: {
-                color: '#888'
+                color: '#ccc'
               }
             }
           }
