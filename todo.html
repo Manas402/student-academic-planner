@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ManasPlannerPro - To-Do</title>
+  <title>ManasPlannerPro - Timer</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -17,17 +17,23 @@
             accent: '#6366F1'
           },
           animation: {
-            fadeInUp: 'fadeInUp 1s ease-out',
-            backgroundScroll: 'bgScroll 60s linear infinite'
+            starFloat: 'starFloat 10s linear infinite',
+            rocketLaunch: 'rocketLaunch 3s ease-in-out infinite',
+            flameFlicker: 'flameFlicker 0.3s ease-in-out infinite'
           },
           keyframes: {
-            fadeInUp: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
+            starFloat: {
+              '0%': { transform: 'translateY(0)' },
+              '100%': { transform: 'translateY(-100vh)' }
             },
-            bgScroll: {
-              '0%': { backgroundPosition: '0 0' },
-              '100%': { backgroundPosition: '100% 100%' }
+            rocketLaunch: {
+              '0%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
+              '100%': { transform: 'translateY(0)' }
+            },
+            flameFlicker: {
+              '0%, 100%': { opacity: 0.8 },
+              '50%': { opacity: 1 }
             }
           }
         }
@@ -38,136 +44,127 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-image: url('https://www.transparenttextures.com/patterns/stardust.png'), url('https://images.unsplash.com/photo-1604014237554-1b3de01d575d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
-      background-size: auto, cover;
-      background-repeat: repeat, no-repeat;
-      background-position: top left, center;
-      animation: bgScroll 60s linear infinite;
+      background: radial-gradient(circle at top, #0f172a, #1e293b);
+      overflow: hidden;
     }
-    .task-card {
-      background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
-      transition: background 0.5s ease;
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: starFloat 10s linear infinite;
+      opacity: 0.8;
     }
-    .task-done {
-      text-decoration: line-through;
-      opacity: 0.5;
+    .rocket {
+      width: 80px;
+      animation: rocketLaunch 2s ease-in-out infinite;
+      position: relative;
     }
-    .task-card:hover {
-      background: linear-gradient(135deg, #4b5563 0%, #6b7280 100%);
+    .flame {
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 30px;
+      background: radial-gradient(circle, orange 40%, red 100%);
+      border-radius: 50%;
+      animation: flameFlicker 0.3s ease-in-out infinite;
+      z-index: -1;
     }
   </style>
 </head>
-<body class="transition duration-500 bg-gray-900 text-white">
+<body class="text-white">
   <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white shadow-md">
     <div class="flex items-center space-x-3">
-      <span class="text-2xl font-extrabold animate-fade-in">✅ ManasPlannerPro</span>
+      <span class="text-2xl font-extrabold">🚀 ManasPlannerPro</span>
     </div>
     <ul class="hidden md:flex space-x-6 text-lg font-semibold">
       <li><a href="index.html" class="hover:text-accent">Home</a></li>
-      <li><a href="todo.html" class="text-accent underline">To-Do</a></li>
+      <li><a href="todo.html" class="hover:text-accent">To-Do</a></li>
       <li><a href="calendar.html" class="hover:text-accent">Calendar</a></li>
-      <li><a href="timer.html" class="hover:text-accent">Timer</a></li>
+      <li><a href="timer.html" class="text-accent underline">Timer</a></li>
       <li><a href="subjects.html" class="hover:text-accent">Subjects</a></li>
     </ul>
     <button onclick="toggleDarkMode()" class="px-4 py-2 rounded bg-white text-gray-900 font-bold hover:bg-gray-200 transition">🌓</button>
   </nav>
 
-  <main class="max-w-3xl mx-auto p-6">
-    <h1 class="text-4xl font-extrabold mb-4 text-center">📝 To-Do List</h1>
-    <p class="text-center text-gray-400 italic mb-8">Stay organized, stay ahead!</p>
-
-    <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
-      <input type="text" id="newTask" placeholder="Enter a new task..." class="flex-grow px-4 py-2 rounded text-black mb-2 md:mb-0">
-      <input type="text" id="newDue" placeholder="Due date (e.g., 2025-06-20)" class="flex-grow px-4 py-2 rounded text-black mb-2 md:mb-0">
-      <select id="newPriority" class="px-4 py-2 rounded text-black mb-2 md:mb-0">
-        <option value="low">🟢 Low</option>
-        <option value="medium">🟡 Medium</option>
-        <option value="high">🔴 High</option>
-      </select>
-      <button onclick="addTask()" class="bg-accent px-4 py-2 rounded text-white font-bold hover:bg-indigo-600">Add</button>
+  <main class="h-screen flex flex-col items-center justify-center text-center">
+    <h1 class="text-5xl font-extrabold mb-6">⏱️ Timer</h1>
+    <div id="timerDisplay" class="text-6xl font-bold mb-6">00:00</div>
+    <input id="countdownInput" type="number" placeholder="Enter minutes..." class="text-black mb-4 px-4 py-2 rounded" />
+    <div class="space-x-4">
+      <button onclick="startTimer()" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded font-bold">Start</button>
+      <button onclick="stopTimer()" class="bg-red-500 hover:bg-red-600 px-6 py-2 rounded font-bold">Stop</button>
+      <button onclick="resetTimer()" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded font-bold">Reset</button>
     </div>
-
-    <div class="flex justify-end mb-4">
-      <select id="categoryFilter" onchange="filterTasks()" class="text-black px-4 py-2 rounded">
-        <option value="all">All</option>
-        <option value="study">📚 Study</option>
-        <option value="personal">🏠 Personal</option>
-        <option value="work">💼 Work</option>
-      </select>
+    <div class="rocket mt-10">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Rocket_clipart.svg" alt="Rocket">
+      <div class="flame"></div>
     </div>
-
-    <ul id="taskList" class="space-y-4"></ul>
   </main>
 
-  <footer class="text-center py-6 bg-gray-800 text-white">
-    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Keep Crushing Tasks 💪</p>
+  <footer class="text-center py-6 bg-gray-800 text-white absolute bottom-0 w-full">
+    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Countdown to success 🚀</p>
   </footer>
 
-  <script>
-    const taskInput = document.getElementById("newTask");
-    const taskList = document.getElementById("taskList");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const priorityInput = document.getElementById("newPriority");
-    const dueInput = document.getElementById("newDue");
+  <audio id="tick" src="https://www.soundjay.com/clock/sounds/clock-ticking-1.mp3" preload="auto"></audio>
+  <audio id="bell" src="https://www.soundjay.com/button/sounds/button-29.mp3" preload="auto"></audio>
 
-    function loadTasks() {
-      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-      const filter = categoryFilter.value;
-      taskList.innerHTML = "";
-      tasks.forEach((task, i) => {
-        if (filter === 'all' || task.category === filter) {
-          const li = document.createElement("li");
-          li.className = `flex justify-between items-start px-4 py-2 rounded task-card flex-col md:flex-row md:items-center transition duration-300 ${task.done ? 'opacity-60' : ''}`;
-          li.innerHTML = `
-            <div>
-              <span class="${task.done ? 'task-done' : ''}">${task.text}</span>
-              <div class="text-sm text-gray-400">
-                <span>📅 ${task.due || 'No due date'}</span> |
-                <span>⚡ ${task.priority}</span> |
-                <span>🏷️ ${task.category}</span>
-              </div>
-            </div>
-            <div class="space-x-2 mt-2 md:mt-0">
-              <button onclick="toggleDone(${i})" class="text-green-400 hover:text-green-200">✔️</button>
-              <button onclick="deleteTask(${i})" class="text-red-400 hover:text-red-200">🗑️</button>
-            </div>
-          `;
-          taskList.appendChild(li);
-        }
-      });
+  <script>
+    let timerInterval;
+    let seconds = 0;
+    let countdown = false;
+
+    function updateDisplay() {
+      const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const secs = String(seconds % 60).padStart(2, '0');
+      document.getElementById("timerDisplay").innerText = `${mins}:${secs}`;
     }
 
-    function addTask() {
-      const text = taskInput.value.trim();
-      const due = dueInput.value.trim();
-      const priority = priorityInput.value;
-      const category = prompt("Enter category: study, personal, work", "study");
-      if (text && category) {
-        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        tasks.push({ text, due, priority, category, done: false });
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        taskInput.value = "";
-        dueInput.value = "";
-        loadTasks();
+    function startTimer() {
+      const inputVal = document.getElementById("countdownInput").value;
+      if (inputVal && !timerInterval) {
+        seconds = parseInt(inputVal) * 60;
+        countdown = true;
+      }
+
+      if (!timerInterval) {
+        const tick = document.getElementById("tick");
+        tick.loop = true;
+        tick.play();
+
+        timerInterval = setInterval(() => {
+          if (countdown) {
+            if (seconds > 0) {
+              seconds--;
+            } else {
+              clearInterval(timerInterval);
+              timerInterval = null;
+              document.getElementById("bell").play();
+              tick.pause();
+              tick.currentTime = 0;
+            }
+          } else {
+            seconds++;
+          }
+          updateDisplay();
+        }, 1000);
       }
     }
 
-    function toggleDone(index) {
-      const tasks = JSON.parse(localStorage.getItem("tasks"));
-      tasks[index].done = !tasks[index].done;
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      loadTasks();
+    function stopTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById("tick").pause();
     }
 
-    function deleteTask(index) {
-      const tasks = JSON.parse(localStorage.getItem("tasks"));
-      tasks.splice(index, 1);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      loadTasks();
-    }
-
-    function filterTasks() {
-      loadTasks();
+    function resetTimer() {
+      stopTimer();
+      seconds = 0;
+      updateDisplay();
+      countdown = false;
     }
 
     function toggleDarkMode() {
@@ -180,8 +177,17 @@
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
       }
-      loadTasks();
-    };
+      updateDisplay();
+
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${5 + Math.random() * 5}s`;
+        document.body.appendChild(star);
+      }
+    }
   </script>
 </body>
 </html>
