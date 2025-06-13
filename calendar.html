@@ -14,7 +14,9 @@
             sans: ['Inter', 'sans-serif']
           },
           colors: {
-            accent: '#6366F1'
+            accent: '#6366F1',
+            event: '#10B981',
+            holiday: '#EF4444'
           },
           animation: {
             fadeInUp: 'fadeInUp 1s ease-out'
@@ -44,6 +46,12 @@
       padding: 0.5rem 0;
       border-radius: 0.375rem;
     }
+    .event-box {
+      background-color: #10B981;
+    }
+    .holiday-box {
+      background-color: #EF4444;
+    }
   </style>
 </head>
 <body class="transition duration-500 bg-gray-900 text-white">
@@ -67,14 +75,23 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <!-- Month Cards -->
     <script>
       const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ];
-
       const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      const events = {
+        '2025-03-10': { type: 'event', label: 'Project Due' },
+        '2025-04-15': { type: 'holiday', label: 'Vishu' },
+        '2025-06-10': { type: 'event', label: 'Semester Exams' },
+        '2025-09-02': { type: 'event', label: "Manas' Birthday" }
+      };
+
+      function getDateKey(year, monthIndex, day) {
+        return `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      }
 
       function createCalendar(monthIndex, year) {
         const firstDay = new Date(year, monthIndex, 1).getDay();
@@ -83,8 +100,15 @@
 
         daysOfWeek.forEach(day => grid += `<div>${day}</div>`);
         for (let i = 0; i < firstDay; i++) grid += `<div></div>`;
+
         for (let day = 1; day <= totalDays; day++) {
-          grid += `<div class='bg-gray-700 text-white'>${day}</div>`;
+          const key = getDateKey(year, monthIndex, day);
+          if (events[key]) {
+            const colorClass = events[key].type === 'holiday' ? 'holiday-box' : 'event-box';
+            grid += `<div class='${colorClass} text-white font-bold cursor-pointer' title='${events[key].label}'>${day}</div>`;
+          } else {
+            grid += `<div class='bg-gray-700 text-white cursor-pointer hover:bg-gray-600'>${day}</div>`;
+          }
         }
 
         grid += '</div>';
