@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ManasPlannerPro - Home</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -17,12 +18,17 @@
             accent: '#6366F1'
           },
           animation: {
-            fadeInUp: 'fadeInUp 1s ease-out'
+            fadeInUp: 'fadeInUp 1s ease-out',
+            backgroundScroll: 'bgScroll 30s linear infinite'
           },
           keyframes: {
             fadeInUp: {
               '0%': { opacity: 0, transform: 'translateY(20px)' },
               '100%': { opacity: 1, transform: 'translateY(0)' },
+            },
+            bgScroll: {
+              '0%': { backgroundPosition: '0 0' },
+              '100%': { backgroundPosition: '100% 100%' }
             }
           }
         }
@@ -33,6 +39,9 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
+      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+      background-color: #111827;
+      animation: bgScroll 60s linear infinite;
     }
   </style>
 </head>
@@ -40,7 +49,7 @@
   <!-- Navigation Bar -->
   <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white shadow-md">
     <div class="flex items-center space-x-3">
-      <span class="text-2xl font-extrabold animate-fade-in">📘 ManasPlannerPro</span>
+      <span class="text-2xl font-extrabold animate-fade-in">🚀 ManasPlannerPro</span>
     </div>
     <ul class="hidden md:flex space-x-6 text-lg font-semibold">
       <li><a href="index.html" class="text-accent underline">Home</a></li>
@@ -81,6 +90,18 @@
         <li><span class="text-purple-400">Shell Scripting & IoT</span></li>
       </ul>
     </section>
+
+    <!-- Marks Graph -->
+    <section class="col-span-2 bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
+      <h2 class="text-2xl font-bold mb-4">📈 Marks Earned</h2>
+      <canvas id="marksChart" height="100"></canvas>
+    </section>
+
+    <!-- Study Time Productivity -->
+    <section class="col-span-2 bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
+      <h2 class="text-2xl font-bold mb-4">⏱️ Study Time Productivity</h2>
+      <canvas id="productivityChart" height="100"></canvas>
+    </section>
   </main>
 
   <!-- Footer -->
@@ -99,7 +120,44 @@
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
       }
-    };
+
+      const marksCtx = document.getElementById('marksChart').getContext('2d');
+      new Chart(marksCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Physics', 'C Programming', 'Maths II', 'Mech', 'IoT'],
+          datasets: [{
+            label: 'Marks (%)',
+            data: [88, 92, 81, 85, 90],
+            backgroundColor: '#6366F1'
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      const productivityCtx = document.getElementById('productivityChart').getContext('2d');
+      new Chart(productivityCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          datasets: [{
+            label: 'Hours Studied',
+            data: [2, 3.5, 4, 3, 5, 6, 4],
+            borderColor: '#10B981',
+            fill: false,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    }
   </script>
 </body>
 </html>
