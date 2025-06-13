@@ -3,9 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ManasPlannerPro - Home</title>
+  <title>ManasPlannerPro - Index</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -18,17 +17,17 @@
             accent: '#6366F1'
           },
           animation: {
-            fadeInUp: 'fadeInUp 1s ease-out',
-            backgroundScroll: 'bgScroll 60s linear infinite'
+            orbit: 'orbit 20s linear infinite',
+            starFloat: 'starFloat 10s linear infinite'
           },
           keyframes: {
-            fadeInUp: {
-              '0%': { opacity: 0, transform: 'translateY(20px)' },
-              '100%': { opacity: 1, transform: 'translateY(0)' }
+            orbit: {
+              '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' }
             },
-            bgScroll: {
-              '0%': { backgroundPosition: '0 0' },
-              '100%': { backgroundPosition: '100% 100%' }
+            starFloat: {
+              '0%': { transform: 'translateY(0)' },
+              '100%': { transform: 'translateY(-100vh)' }
             }
           }
         }
@@ -39,17 +38,44 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-      background-color: #0f172a;
-      animation: bgScroll 60s linear infinite;
+      background: radial-gradient(circle at top, #0f172a, #1e293b);
+      overflow: hidden;
+    }
+    .planet {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: -20px;
+    }
+    .sun {
+      background: yellow;
+      width: 80px;
+      height: 80px;
+      margin: -40px;
+      z-index: 10;
+    }
+    .orbiting {
+      animation: orbit linear infinite;
+      transform-origin: center center;
+    }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: starFloat 10s linear infinite;
+      opacity: 0.8;
     }
   </style>
 </head>
-<body class="transition duration-500 bg-gray-900 text-white">
-  <!-- Navigation Bar -->
+<body>
   <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white shadow-md">
     <div class="flex items-center space-x-3">
-      <span class="text-2xl font-extrabold animate-fade-in">📘 ManasPlannerPro</span>
+      <span class="text-2xl font-extrabold animate-fade-in">🌌 ManasPlannerPro</span>
     </div>
     <ul class="hidden md:flex space-x-6 text-lg font-semibold">
       <li><a href="index.html" class="text-accent underline">Home</a></li>
@@ -61,52 +87,22 @@
     <button onclick="toggleDarkMode()" class="px-4 py-2 rounded bg-white text-gray-900 font-bold hover:bg-gray-200 transition">🌓</button>
   </nav>
 
-  <!-- Hero Section -->
-  <header class="text-center py-16 bg-gradient-to-br from-gray-800 to-gray-900 shadow-lg">
-    <h1 class="text-5xl font-extrabold mb-4 animate-fadeInUp">Welcome to <span class="text-accent">ManasPlannerPro</span></h1>
-    <p class="text-lg text-gray-300 italic">Your futuristic, AI-powered academic planner — organize tasks, manage your schedule, and stay focused in style.</p>
-    <p class="mt-4 text-accent font-semibold">AI Student Planner</p>
-  </header>
-
-  <!-- Main Content -->
-  <main class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-    <!-- Student Info -->
-    <section class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
-      <h2 class="text-2xl font-bold mb-4">🎓 Student Info</h2>
-      <p><strong>Name:</strong> Manas Gopinath</p>
-      <p><strong>Course:</strong> B.Tech - Computer Science</p>
-      <p><strong>Semester:</strong> S2</p>
-      <p><strong>University:</strong> KTU</p>
-    </section>
-
-    <!-- Subjects Overview -->
-    <section class="bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
-      <h2 class="text-2xl font-bold mb-4">📚 Subjects Overview</h2>
-      <ul class="list-disc list-inside space-y-2 text-gray-300">
-        <li><span class="text-pink-400">Engineering Physics</span></li>
-        <li><span class="text-blue-400">Computer Programming in C</span></li>
-        <li><span class="text-yellow-300">Mathematics II</span></li>
-        <li><span class="text-green-400">Engineering Mechanics</span></li>
-        <li><span class="text-purple-400">Shell Scripting & IoT</span></li>
-      </ul>
-    </section>
-
-    <!-- Marks Chart -->
-    <section class="col-span-1 md:col-span-2 bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
-      <h2 class="text-2xl font-bold mb-4">📈 Academic Performance</h2>
-      <canvas id="marksChart" height="200"></canvas>
-    </section>
-
-    <!-- Productivity Chart -->
-    <section class="col-span-1 md:col-span-2 bg-gray-800 rounded-xl shadow-lg p-6 animate-fadeInUp">
-      <h2 class="text-2xl font-bold mb-4">⏳ Study Productivity</h2>
-      <canvas id="studyChart" height="200"></canvas>
-    </section>
+  <main class="h-screen flex flex-col items-center justify-center text-center relative z-10">
+    <h1 class="text-6xl font-extrabold mb-4">🌠 Welcome to ManasPlannerPro</h1>
+    <p class="text-lg text-gray-400 italic mb-8">Your Universe of Academic Productivity</p>
   </main>
 
-  <!-- Footer -->
-  <footer class="text-center py-6 bg-gray-800 text-white">
-    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Built for the future 🌟</p>
+  <!-- Solar System Animation -->
+  <div class="sun planet absolute"></div>
+  <div class="planet orbiting bg-blue-400" style="animation-duration: 10s;"></div>
+  <div class="planet orbiting bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
+  <div class="planet orbiting bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
+  <div class="planet orbiting bg-purple-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
+
+  <!-- Optional: Add comets or moons later -->
+
+  <footer class="text-center py-6 bg-gray-800 text-white absolute bottom-0 w-full z-10">
+    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Learn Across the Stars ✨</p>
   </footer>
 
   <script>
@@ -121,52 +117,15 @@
         document.documentElement.classList.add('dark');
       }
 
-      const marksCtx = document.getElementById('marksChart').getContext('2d');
-      new Chart(marksCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Physics', 'C Prog', 'Maths II', 'Mech', 'IoT'],
-          datasets: [{
-            label: 'Marks (%)',
-            data: [82, 89, 78, 74, 91],
-            backgroundColor: '#6366F1'
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              max: 100
-            }
-          }
-        }
-      });
-
-      const studyCtx = document.getElementById('studyChart').getContext('2d');
-      new Chart(studyCtx, {
-        type: 'line',
-        data: {
-          labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          datasets: [{
-            label: 'Hours Studied',
-            data: [2, 3.5, 4, 2.5, 5, 3, 4.5],
-            borderColor: '#FBBF24',
-            fill: false,
-            tension: 0.3
-          }]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-              suggestedMax: 6
-            }
-          }
-        }
-      });
-    };
+      for (let i = 0; i < 120; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${5 + Math.random() * 5}s`;
+        document.body.appendChild(star);
+      }
+    }
   </script>
 </body>
 </html>
