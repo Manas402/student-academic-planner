@@ -72,60 +72,17 @@
   <header class="text-center py-12 bg-gradient-to-br from-gray-800 to-gray-900 shadow-lg">
     <h1 class="text-4xl font-extrabold mb-4 animate-fadeInUp">📅 Academic Calendar</h1>
     <p class="text-lg text-gray-300 italic">Plan your year month-by-month and never miss a deadline.</p>
+    <div class="flex justify-center mt-6 gap-4">
+      <select id="monthSelector" class="bg-gray-800 text-white border border-accent px-4 py-2 rounded">
+        <option disabled selected>Select Month</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Search events..." class="bg-gray-800 border border-accent text-white px-4 py-2 rounded" />
+      <button onclick="window.print()" class="bg-accent px-4 py-2 rounded text-white font-bold hover:bg-indigo-600 transition">🖨️ Print</button>
+    </div>
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    <script>
-      const months = [
-        'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'
-      ];
-      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-      const events = {
-        '2025-03-10': { type: 'event', label: 'Project Due' },
-        '2025-04-15': { type: 'holiday', label: 'Vishu' },
-        '2025-06-10': { type: 'event', label: 'Semester Exams' },
-        '2025-09-02': { type: 'event', label: "Manas' Birthday" }
-      };
-
-      function getDateKey(year, monthIndex, day) {
-        return `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      }
-
-      function createCalendar(monthIndex, year) {
-        const firstDay = new Date(year, monthIndex, 1).getDay();
-        const totalDays = new Date(year, monthIndex + 1, 0).getDate();
-        let grid = '<div class="calendar-grid text-sm font-semibold text-gray-400">';
-
-        daysOfWeek.forEach(day => grid += `<div>${day}</div>`);
-        for (let i = 0; i < firstDay; i++) grid += `<div></div>`;
-
-        for (let day = 1; day <= totalDays; day++) {
-          const key = getDateKey(year, monthIndex, day);
-          if (events[key]) {
-            const colorClass = events[key].type === 'holiday' ? 'holiday-box' : 'event-box';
-            grid += `<div class='${colorClass} text-white font-bold cursor-pointer' title='${events[key].label}'>${day}</div>`;
-          } else {
-            grid += `<div class='bg-gray-700 text-white cursor-pointer hover:bg-gray-600'>${day}</div>`;
-          }
-        }
-
-        grid += '</div>';
-        return grid;
-      }
-
-      const year = new Date().getFullYear();
-
-      months.forEach((month, i) => {
-        document.write(`
-          <div class='bg-gray-800 rounded-xl p-6 shadow-lg animate-fadeInUp'>
-            <h2 class='text-2xl font-bold text-accent mb-4'>${month}</h2>
-            ${createCalendar(i, year)}
-          </div>
-        `);
-      });
-    </script>
+    <!-- Calendar will be inserted here by JS -->
   </main>
 
   <footer class="text-center py-6 bg-gray-800 text-white">
@@ -133,6 +90,92 @@
   </footer>
 
   <script>
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const events = {
+      '2025-01-01': { type: 'holiday', label: '🎉 New Year Holiday' },
+      '2025-01-10': { type: 'event', label: '📘 Semester 2 Classes Begin' },
+      '2025-02-14': { type: 'event', label: '🧪 Physics Lab Internal' },
+      '2025-03-10': { type: 'event', label: '📕 Mini Project Submission' },
+      '2025-04-15': { type: 'holiday', label: '🌸 Vishu Festival' },
+      '2025-04-22': { type: 'event', label: '💻 Coding Test - CS' },
+      '2025-05-01': { type: 'holiday', label: '🔧 Labour Day' },
+      '2025-05-10': { type: 'event', label: '📄 Mid Semester Exam Begins' },
+      '2025-05-20': { type: 'event', label: '📄 Mid Semester Exam Ends' },
+      '2025-06-10': { type: 'event', label: '📝 Semester Final Exams Begin' },
+      '2025-06-25': { type: 'event', label: '🎓 Last Exam - English' },
+      '2025-07-01': { type: 'event', label: '🌴 Semester Break Starts' },
+      '2025-08-15': { type: 'holiday', label: '🇮🇳 Independence Day' },
+      '2025-09-02': { type: 'event', label: "🎂 Manas' Birthday" },
+      '2025-09-10': { type: 'event', label: '🏫 Semester 3 Begins' },
+      '2025-10-02': { type: 'holiday', label: '🕊️ Gandhi Jayanti' },
+      '2025-12-25': { type: 'holiday', label: '🎄 Christmas' }
+    };
+
+    function getDateKey(year, monthIndex, day) {
+      return `${year}-${String(monthIndex + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    }
+
+    function createCalendar(monthIndex, year) {
+      const firstDay = new Date(year, monthIndex, 1).getDay();
+      const totalDays = new Date(year, monthIndex + 1, 0).getDate();
+      let grid = '<div class="calendar-grid text-sm font-semibold text-gray-400">';
+
+      daysOfWeek.forEach(day => grid += `<div>${day}</div>`);
+      for (let i = 0; i < firstDay; i++) grid += `<div></div>`;
+
+      for (let day = 1; day <= totalDays; day++) {
+        const key = getDateKey(year, monthIndex, day);
+        if (events[key]) {
+          const colorClass = events[key].type === 'holiday' ? 'holiday-box' : 'event-box';
+          grid += `<div class='${colorClass} text-white font-bold cursor-pointer' title='${events[key].label}'>${day}</div>`;
+        } else {
+          grid += `<div class='bg-gray-700 text-white cursor-pointer hover:bg-gray-600'>${day}</div>`;
+        }
+      }
+
+      grid += '</div>';
+      return grid;
+    }
+
+    function renderCalendars() {
+      const year = new Date().getFullYear();
+      const container = document.querySelector('main');
+      months.forEach((month, i) => {
+        const div = document.createElement('div');
+        div.className = 'bg-gray-800 rounded-xl p-6 shadow-lg animate-fadeInUp';
+        div.id = `month-${i}`;
+        div.innerHTML = `
+          <h2 class='text-2xl font-bold text-accent mb-4'>${month}</h2>
+          ${createCalendar(i, year)}
+        `;
+        container.appendChild(div);
+
+        const opt = document.createElement('option');
+        opt.value = `month-${i}`;
+        opt.textContent = month;
+        document.getElementById('monthSelector').appendChild(opt);
+      });
+    }
+
+    renderCalendars();
+
+    document.getElementById('monthSelector').addEventListener('change', (e) => {
+      const el = document.getElementById(e.target.value);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const search = e.target.value.toLowerCase();
+      document.querySelectorAll('[title]').forEach(el => {
+        el.style.border = el.title.toLowerCase().includes(search) ? '2px solid #6366F1' : '';
+      });
+    });
+
     function toggleDarkMode() {
       const html = document.documentElement;
       html.classList.toggle('dark');
