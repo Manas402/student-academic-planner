@@ -1,61 +1,85 @@
-<!-- This is index.html -->
+<!-- index.html - Futuristic AI-themed PlannerPro -->
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home - Student Planner</title>
+  <title>PlannerPro - Student Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
   </script>
   <link href="styles.css" rel="stylesheet" />
+  <style>
+    body {
+      background: linear-gradient(130deg, #0f172a, #1e293b, #111827);
+      background-size: 400% 400%;
+      animation: pulseBackground 15s ease infinite;
+    }
+
+    @keyframes pulseBackground {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .neon {
+      text-shadow: 0 0 8px #4f46e5, 0 0 12px #4f46e5;
+    }
+  </style>
 </head>
-<body class="transition duration-500 bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-gray-900 dark:text-white">
+<body class="transition duration-500 text-white">
 
   <!-- Navbar -->
-  <nav class="bg-white dark:bg-gray-900 shadow sticky top-0 z-50">
+  <nav class="bg-gray-900 bg-opacity-90 shadow sticky top-0 z-50 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16">
-        <div class="flex">
-          <div class="flex-shrink-0 flex items-center text-xl font-semibold text-indigo-600 dark:text-indigo-300">
-            📘 PlannerPro
-          </div>
-          <div class="hidden sm:-my-px sm:ml-10 sm:flex space-x-6 items-center text-sm">
-            <a href="index.html" class="text-indigo-600 dark:text-indigo-300 font-semibold">Home</a>
-            <a href="subjects.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-500">Subjects</a>
-            <a href="todo.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-500">To-Do</a>
-            <a href="calendar.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-500">Calendar</a>
-            <a href="timer.html" class="text-gray-700 dark:text-gray-200 hover:text-indigo-500">Timer</a>
-          </div>
+      <div class="flex justify-between h-16 items-center">
+        <div class="flex items-center text-xl font-bold neon text-indigo-400 tracking-wide">📘 PlannerPro</div>
+        <div class="hidden md:flex space-x-6 text-sm">
+          <a href="index.html" class="text-indigo-400 font-semibold">Home</a>
+          <a href="subjects.html" class="hover:text-indigo-300">Subjects</a>
+          <a href="todo.html" class="hover:text-indigo-300">To-Do</a>
+          <a href="calendar.html" class="hover:text-indigo-300">Calendar</a>
+          <a href="timer.html" class="hover:text-indigo-300">Timer</a>
         </div>
-        <div class="flex items-center">
-          <button onclick="toggleDarkMode()" class="text-sm px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition">
-            🌓 Toggle Theme
-          </button>
-        </div>
+        <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-sm transition">🌓 Toggle</button>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="max-w-5xl mx-auto py-10 px-4 text-center">
-    <h1 class="text-4xl font-bold mb-4 text-indigo-700 dark:text-indigo-300">Welcome to PlannerPro</h1>
-    <p class="text-lg text-gray-600 dark:text-gray-300">Your all-in-one academic productivity tool. Navigate to your subjects, to-do list, calendar, or study timer using the menu above.</p>
-    <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/student-2027610_1280.png" class="mx-auto my-10 w-3/4 md:w-1/2 rounded-lg shadow-lg" alt="Planner Illustration">
+  <!-- Hero Content -->
+  <main class="max-w-5xl mx-auto py-20 px-6 text-center">
+    <div class="glass p-10 rounded-2xl shadow-xl animate-fade-in">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 neon text-indigo-300">Welcome to PlannerPro</h1>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+        Your futuristic, AI-powered academic planner — organize tasks, manage your schedule, and stay focused in style.
+      </p>
+      <img src="https://cdn.pixabay.com/photo/2022/01/04/11/11/ai-6912976_1280.png"
+           alt="AI Student Planner" class="mx-auto my-10 w-full md:w-2/3 rounded-xl shadow-2xl" />
+    </div>
   </main>
 
-  <footer class="text-center p-6 bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 text-white shadow-inner">
-    &copy; 2025 ✨ Student Planner by <strong>Manas</strong> | Stay Focused 🚀
+  <!-- Footer -->
+  <footer class="text-center p-6 bg-gray-800 bg-opacity-80 text-gray-300 mt-12 text-sm">
+    &copy; 2025 <span class="text-indigo-400 font-semibold">PlannerPro by Manas</span> | Built for the future 🚀
   </footer>
 
+  <!-- Dark Mode Script -->
   <script>
     function toggleDarkMode() {
       const html = document.documentElement;
       html.classList.toggle('dark');
       localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
     }
-
     window.onload = () => {
       if (localStorage.getItem('theme') === 'dark') {
         document.documentElement.classList.add('dark');
