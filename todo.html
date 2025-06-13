@@ -84,4 +84,104 @@
         <option value="medium">🟡 Medium</option>
         <option value="high">🔴 High</option>
       </select>
-      <button onclick="addTask()" class="bg-accent px-4 py-2 rounded text-white font-bold
+      <button onclick="addTask()" class="bg-accent px-4 py-2 rounded text-white font-bold hover:bg-indigo-600">Add</button>
+    </div>
+
+    <div class="flex justify-end mb-4">
+      <select id="categoryFilter" onchange="filterTasks()" class="text-black px-4 py-2 rounded">
+        <option value="all">All</option>
+        <option value="study">📚 Study</option>
+        <option value="personal">🏠 Personal</option>
+        <option value="work">💼 Work</option>
+      </select>
+    </div>
+
+    <ul id="taskList" class="space-y-4"></ul>
+  </main>
+
+  <footer class="text-center py-6 bg-gray-800 text-white">
+    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Keep Crushing Tasks 💪</p>
+  </footer>
+
+  <script>
+    const taskInput = document.getElementById("newTask");
+    const taskList = document.getElementById("taskList");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const priorityInput = document.getElementById("newPriority");
+    const dueInput = document.getElementById("newDue");
+
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const filter = categoryFilter.value;
+      taskList.innerHTML = "";
+      tasks.forEach((task, i) => {
+        if (filter === 'all' || task.category === filter) {
+          const li = document.createElement("li");
+          li.className = `flex justify-between items-start px-4 py-2 rounded task-card flex-col md:flex-row md:items-center transition duration-300 ${task.done ? 'opacity-60' : ''}`;
+          li.innerHTML = `
+            <div>
+              <span class="${task.done ? 'task-done' : ''}">${task.text}</span>
+              <div class="text-sm text-gray-400">
+                <span>📅 ${task.due || 'No due date'}</span> |
+                <span>⚡ ${task.priority}</span> |
+                <span>🏷️ ${task.category}</span>
+              </div>
+            </div>
+            <div class="space-x-2 mt-2 md:mt-0">
+              <button onclick="toggleDone(${i})" class="text-green-400 hover:text-green-200">✔️</button>
+              <button onclick="deleteTask(${i})" class="text-red-400 hover:text-red-200">🗑️</button>
+            </div>
+          `;
+          taskList.appendChild(li);
+        }
+      });
+    }
+
+    function addTask() {
+      const text = taskInput.value.trim();
+      const due = dueInput.value.trim();
+      const priority = priorityInput.value;
+      const category = prompt("Enter category: study, personal, work", "study");
+      if (text && category) {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        tasks.push({ text, due, priority, category, done: false });
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        taskInput.value = "";
+        dueInput.value = "";
+        loadTasks();
+      }
+    }
+
+    function toggleDone(index) {
+      const tasks = JSON.parse(localStorage.getItem("tasks"));
+      tasks[index].done = !tasks[index].done;
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    function deleteTask(index) {
+      const tasks = JSON.parse(localStorage.getItem("tasks"));
+      tasks.splice(index, 1);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    function filterTasks() {
+      loadTasks();
+    }
+
+    function toggleDarkMode() {
+      const html = document.documentElement;
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    }
+
+    window.onload = () => {
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+      loadTasks();
+    };
+  </script>
+</body>
+</html>
