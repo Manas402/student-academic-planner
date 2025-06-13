@@ -1,76 +1,90 @@
-<!-- index.html - Futuristic AI-themed PlannerPro -->
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PlannerPro - Student Dashboard</title>
+  <title>ManasPlannerPro - AI Student Planner</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { darkMode: 'class' };
   </script>
-  <link href="styles.css" rel="stylesheet" />
   <style>
     body {
-      background: linear-gradient(130deg, #0f172a, #1e293b, #111827);
-      background-size: 400% 400%;
-      animation: pulseBackground 15s ease infinite;
+      background: linear-gradient(145deg, #0f172a, #1e293b, #2e1065);
+      background-size: 300% 300%;
+      animation: bgMotion 20s ease infinite;
     }
 
-    @keyframes pulseBackground {
-      0%, 100% {
-        background-position: 0% 50%;
-      }
-      50% {
-        background-position: 100% 50%;
-      }
+    @keyframes bgMotion {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+    .glass-box {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.1));
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
     .neon {
-      text-shadow: 0 0 8px #4f46e5, 0 0 12px #4f46e5;
+      text-shadow: 0 0 10px #6366f1, 0 0 20px #6366f1;
     }
   </style>
 </head>
-<body class="transition duration-500 text-white">
+<body class="text-white transition duration-500">
 
   <!-- Navbar -->
   <nav class="bg-gray-900 bg-opacity-90 shadow sticky top-0 z-50 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16 items-center">
-        <div class="flex items-center text-xl font-bold neon text-indigo-400 tracking-wide">📘 PlannerPro</div>
-        <div class="hidden md:flex space-x-6 text-sm">
-          <a href="index.html" class="text-indigo-400 font-semibold">Home</a>
-          <a href="subjects.html" class="hover:text-indigo-300">Subjects</a>
-          <a href="todo.html" class="hover:text-indigo-300">To-Do</a>
-          <a href="calendar.html" class="hover:text-indigo-300">Calendar</a>
-          <a href="timer.html" class="hover:text-indigo-300">Timer</a>
-        </div>
-        <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-lg text-sm transition">🌓 Toggle</button>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between h-16 items-center">
+      <div class="text-xl font-bold neon text-indigo-400 tracking-wide">📘 ManasPlannerPro</div>
+      <div class="hidden md:flex space-x-6 text-sm">
+        <a href="index.html" class="text-indigo-400 font-semibold">Home</a>
+        <a href="subjects.html" class="hover:text-indigo-300">Subjects</a>
+        <a href="todo.html" class="hover:text-indigo-300">To-Do</a>
+        <a href="calendar.html" class="hover:text-indigo-300">Calendar</a>
+        <a href="timer.html" class="hover:text-indigo-300">Timer</a>
       </div>
+      <button onclick="toggleDarkMode()" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm transition">🌓 Toggle</button>
     </div>
   </nav>
 
-  <!-- Hero Content -->
-  <main class="max-w-5xl mx-auto py-20 px-6 text-center">
-    <div class="glass p-10 rounded-2xl shadow-xl animate-fade-in">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4 neon text-indigo-300">Welcome to PlannerPro</h1>
-      <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+  <!-- Welcome Section -->
+  <main class="max-w-5xl mx-auto py-16 px-6 text-center">
+    <div class="glass-box p-10 rounded-2xl shadow-xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4 neon text-indigo-300">Welcome to ManasPlannerPro</h1>
+      <p class="text-lg text-gray-300 max-w-2xl mx-auto mb-8">
         Your futuristic, AI-powered academic planner — organize tasks, manage your schedule, and stay focused in style.
       </p>
-      <img src="https://cdn.pixabay.com/photo/2022/01/04/11/11/ai-6912976_1280.png"
-           alt="AI Student Planner" class="mx-auto my-10 w-full md:w-2/3 rounded-xl shadow-2xl" />
+      <p class="italic text-sm text-purple-200">AI Student Planner</p>
     </div>
   </main>
 
+  <!-- Student Information Section -->
+  <section class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 mb-16">
+    <div class="glass-box p-6 rounded-xl">
+      <h2 class="text-2xl font-semibold text-indigo-200 mb-4">👤 Student Info</h2>
+      <ul class="text-gray-300 text-left space-y-2">
+        <li><strong>Name:</strong> Manas Gopinath</li>
+        <li><strong>Course:</strong> B.Tech - Computer Science</li>
+        <li><strong>Semester:</strong> S2</li>
+        <li><strong>University:</strong> KTU</li>
+      </ul>
+    </div>
+    <div class="glass-box p-6 rounded-xl">
+      <h2 class="text-2xl font-semibold text-pink-200 mb-4">📚 Subjects Overview</h2>
+      <ul class="text-gray-300 text-left space-y-2">
+        <li>🧠 Engineering Physics</li>
+        <li>💡 Computer Programming in C</li>
+        <li>📐 Mathematics II</li>
+        <li>🛠️ Engineering Mechanics</li>
+        <li>💻 Shell Scripting & IoT</li>
+      </ul>
+    </div>
+  </section>
+
   <!-- Footer -->
-  <footer class="text-center p-6 bg-gray-800 bg-opacity-80 text-gray-300 mt-12 text-sm">
-    &copy; 2025 <span class="text-indigo-400 font-semibold">PlannerPro by Manas</span> | Built for the future 🚀
+  <footer class="text-center p-6 bg-gray-800 bg-opacity-80 text-gray-300 text-sm">
+    &copy; 2025 <span class="text-indigo-400 font-semibold">ManasPlannerPro</span> | Built for the future 🚀
   </footer>
 
   <!-- Dark Mode Script -->
