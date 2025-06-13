@@ -34,6 +34,16 @@
     body {
       font-family: 'Inter', sans-serif;
     }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.5rem;
+    }
+    .calendar-grid div {
+      text-align: center;
+      padding: 0.5rem 0;
+      border-radius: 0.375rem;
+    }
   </style>
 </head>
 <body class="transition duration-500 bg-gray-900 text-white">
@@ -57,29 +67,41 @@
   </header>
 
   <main class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Month Cards -->
     <script>
       const months = [
         'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'
       ];
+
+      const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+      function createCalendar(monthIndex, year) {
+        const firstDay = new Date(year, monthIndex, 1).getDay();
+        const totalDays = new Date(year, monthIndex + 1, 0).getDate();
+        let grid = '<div class="calendar-grid text-sm font-semibold text-gray-400">';
+
+        daysOfWeek.forEach(day => grid += `<div>${day}</div>`);
+        for (let i = 0; i < firstDay; i++) grid += `<div></div>`;
+        for (let day = 1; day <= totalDays; day++) {
+          grid += `<div class='bg-gray-700 text-white'>${day}</div>`;
+        }
+
+        grid += '</div>';
+        return grid;
+      }
+
+      const year = new Date().getFullYear();
+
+      months.forEach((month, i) => {
+        document.write(`
+          <div class='bg-gray-800 rounded-xl p-6 shadow-lg animate-fadeInUp'>
+            <h2 class='text-2xl font-bold text-accent mb-4'>${month}</h2>
+            ${createCalendar(i, year)}
+          </div>
+        `);
+      });
     </script>
-    <!-- Calendar Cards -->
-    <div class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <script>
-        months.forEach(month => {
-          document.write(`
-            <div class='bg-gray-800 rounded-xl p-6 shadow-lg animate-fadeInUp'>
-              <h2 class='text-2xl font-bold text-accent mb-4'>${month}</h2>
-              <ul class='list-disc list-inside text-gray-300'>
-                <li>Event 1</li>
-                <li>Event 2</li>
-                <li>Holiday/Exam</li>
-              </ul>
-            </div>
-          `);
-        });
-      </script>
-    </div>
   </main>
 
   <footer class="text-center py-6 bg-gray-800 text-white">
