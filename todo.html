@@ -67,9 +67,24 @@
     <h1 class="text-4xl font-extrabold mb-4 text-center">📝 To-Do List</h1>
     <p class="text-center text-gray-400 italic mb-8">Stay organized, stay ahead!</p>
 
-    <div class="flex mb-6">
-      <input type="text" id="newTask" placeholder="Enter a new task..." class="flex-grow px-4 py-2 rounded-l text-black">
-      <button onclick="addTask()" class="bg-accent px-4 py-2 rounded-r text-white font-bold hover:bg-indigo-600">Add</button>
+    <div class="flex flex-col md:flex-row md:space-x-4 mb-6">
+      <input type="text" id="newTask" placeholder="Enter a new task..." class="flex-grow px-4 py-2 rounded text-black mb-2 md:mb-0">
+      <input type="text" id="newDue" placeholder="Due date (e.g., 2025-06-20)" class="flex-grow px-4 py-2 rounded text-black mb-2 md:mb-0">
+      <select id="newPriority" class="px-4 py-2 rounded text-black mb-2 md:mb-0">
+        <option value="low">🟢 Low</option>
+        <option value="medium">🟡 Medium</option>
+        <option value="high">🔴 High</option>
+      </select>
+      <button onclick="addTask()" class="bg-accent px-4 py-2 rounded text-white font-bold hover:bg-indigo-600">Add</button>
+    </div>
+
+    <div class="flex justify-end mb-4">
+      <select id="categoryFilter" onchange="filterTasks()" class="text-black px-4 py-2 rounded">
+        <option value="all">All</option>
+        <option value="study">📚 Study</option>
+        <option value="personal">🏠 Personal</option>
+        <option value="work">💼 Work</option>
+      </select>
     </div>
 
     <ul id="taskList" class="space-y-4"></ul>
@@ -82,31 +97,48 @@
   <script>
     const taskInput = document.getElementById("newTask");
     const taskList = document.getElementById("taskList");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const priorityInput = document.getElementById("newPriority");
+    const dueInput = document.getElementById("newDue");
 
     function loadTasks() {
       const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      const filter = categoryFilter.value;
       taskList.innerHTML = "";
       tasks.forEach((task, i) => {
-        const li = document.createElement("li");
-        li.className = "flex justify-between items-center px-4 py-2 rounded task-card";
-        li.innerHTML = `
-          <span class="${task.done ? 'task-done' : ''}">${task.text}</span>
-          <div class="space-x-2">
-            <button onclick="toggleDone(${i})" class="text-green-400 hover:text-green-200">✔️</button>
-            <button onclick="deleteTask(${i})" class="text-red-400 hover:text-red-200">🗑️</button>
-          </div>
-        `;
-        taskList.appendChild(li);
+        if (filter === 'all' || task.category === filter) {
+          const li = document.createElement("li");
+          li.className = "flex justify-between items-start px-4 py-2 rounded task-card flex-col md:flex-row md:items-center";
+          li.innerHTML = `
+            <div>
+              <span class="${task.done ? 'task-done' : ''}">${task.text}</span>
+              <div class="text-sm text-gray-400">
+                <span>📅 ${task.due || 'No due date'}</span> |
+                <span>⚡ ${task.priority}</span> |
+                <span>🏷️ ${task.category}</span>
+              </div>
+            </div>
+            <div class="space-x-2 mt-2 md:mt-0">
+              <button onclick="toggleDone(${i})" class="text-green-400 hover:text-green-200">✔️</button>
+              <button onclick="deleteTask(${i})" class="text-red-400 hover:text-red-200">🗑️</button>
+            </div>
+          `;
+          taskList.appendChild(li);
+        }
       });
     }
 
     function addTask() {
       const text = taskInput.value.trim();
-      if (text) {
+      const due = dueInput.value.trim();
+      const priority = priorityInput.value;
+      const category = prompt("Enter category: study, personal, work", "study");
+      if (text && category) {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        tasks.push({ text, done: false });
+        tasks.push({ text, due, priority, category, done: false });
         localStorage.setItem("tasks", JSON.stringify(tasks));
         taskInput.value = "";
+        dueInput.value = "";
         loadTasks();
       }
     }
@@ -122,6 +154,10 @@
       const tasks = JSON.parse(localStorage.getItem("tasks"));
       tasks.splice(index, 1);
       localStorage.setItem("tasks", JSON.stringify(tasks));
+      loadTasks();
+    }
+
+    function filterTasks() {
       loadTasks();
     }
 
