@@ -88,8 +88,13 @@
     </style>
   </head>
   <body>
-    <!-- Dark Mode & Export & Timer Controls -->
-    <div class="fixed top-4 right-4 z-50 flex gap-2">
+    <!-- Motivational Quote -->
+    <div class="fixed top-4 left-4 z-50 bg-black bg-opacity-60 text-white px-4 py-2 rounded-lg shadow">
+      <span id="quote">🌟 Loading motivation...</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="fixed top-4 right-4 z-50 flex flex-col gap-2 md:flex-row">
       <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">🌗 Toggle Mode</button>
       <button onclick="exportPDF()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">📤 Export PDF</button>
       <div class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow flex items-center">
@@ -102,17 +107,23 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <span class="text-white font-bold text-xl">ManasPlannerPro</span>
-          <div class="hidden md:flex space-x-4">
-            <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
-            <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
-            <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
-            <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
-            <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
+          <div class="md:hidden">
+            <button onclick="toggleMobileMenu()" class="text-white focus:outline-none">
+              ☰
+            </button>
+          </div>
+          <div id="mobileMenu" class="hidden md:flex space-x-4 flex-col md:flex-row absolute md:static top-16 left-0 w-full md:w-auto bg-gray-800 md:bg-transparent px-4 py-2 md:p-0">
+            <a href="index.html" class="text-gray-300 hover:text-white block py-2 md:py-0 px-3 rounded-md text-sm font-medium">Home</a>
+            <a href="calendar.html" class="text-gray-300 hover:text-white block py-2 md:py-0 px-3 rounded-md text-sm font-medium">Calendar</a>
+            <a href="timer.html" class="text-gray-300 hover:text-white block py-2 md:py-0 px-3 rounded-md text-sm font-medium">Timer</a>
+            <a href="todo.html" class="text-gray-300 hover:text-white block py-2 md:py-0 px-3 rounded-md text-sm font-medium">To-Do</a>
+            <a href="subjects.html" class="text-gray-300 hover:text-white block py-2 md:py-0 px-3 rounded-md text-sm font-medium">Subjects</a>
           </div>
         </div>
       </div>
     </nav>
 
+    <!-- Space Animation -->
     <div class="pt-20 relative z-10">
       <div class="sun"></div>
       <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
@@ -123,6 +134,7 @@
       <div class="comet" style="top: 80%; left: -5%;"></div>
     </div>
 
+    <!-- Main Content -->
     <main id="reportSection" class="relative z-20 max-w-6xl mx-auto py-10 px-4">
       <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
 
@@ -161,6 +173,7 @@
     </main>
 
     <script>
+      // Star field
       for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.className = 'star';
@@ -170,8 +183,8 @@
         document.body.appendChild(star);
       }
 
-      const hoursCtx = document.getElementById('hoursChart').getContext('2d');
-      new Chart(hoursCtx, {
+      // Charts
+      new Chart(document.getElementById('hoursChart'), {
         type: 'bar',
         data: {
           labels: ['Physics', 'Mathematics', 'Programming'],
@@ -184,8 +197,7 @@
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
       });
 
-      const progressCtx = document.getElementById('progressChart').getContext('2d');
-      new Chart(progressCtx, {
+      new Chart(document.getElementById('progressChart'), {
         type: 'doughnut',
         data: {
           labels: ['Physics', 'Mathematics', 'Programming'],
@@ -207,17 +219,7 @@
         }
       });
 
-      let dark = true;
-      function toggleDarkMode() {
-        document.documentElement.classList.toggle('dark');
-        dark = !dark;
-      }
-
-      function exportPDF() {
-        const element = document.getElementById('reportSection');
-        html2pdf().from(element).save('Manas_Study_Report.pdf');
-      }
-
+      // Timer
       let seconds = 0;
       setInterval(() => {
         seconds++;
@@ -226,6 +228,31 @@
         const secs = String(seconds % 60).padStart(2, '0');
         document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
       }, 1000);
+
+      // Dark mode
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+      }
+
+      // PDF Export
+      function exportPDF() {
+        html2pdf().from(document.getElementById('reportSection')).save('Manas_Study_Report.pdf');
+      }
+
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        document.getElementById('mobileMenu').classList.toggle('hidden');
+      }
+
+      // Motivational Quote
+      const quotes = [
+        "🌟 Believe in yourself, always!",
+        "🚀 Keep pushing, success is near.",
+        "🔥 Focus. Hustle. Grow.",
+        "🎯 One step at a time, always forward.",
+        "💡 Learn today, lead tomorrow!"
+      ];
+      document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
     </script>
   </body>
 </html>
