@@ -40,6 +40,7 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -86,7 +87,6 @@
   </style>
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     window.onload = () => {
       for (let i = 0; i < 100; i++) {
@@ -114,12 +114,23 @@
           <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
           <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
         </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden">
+          <button id="menu-btn" class="text-white focus:outline-none">☰</button>
+        </div>
       </div>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1 bg-gray-800">
+      <a href="index.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Home</a>
+      <a href="calendar.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Calendar</a>
+      <a href="timer.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Timer</a>
+      <a href="todo.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">To-Do</a>
+      <a href="subjects.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Subjects</a>
     </div>
   </nav>
 
   <div class="pt-20">
-    <!-- Space Background Animation -->
     <div class="sun"></div>
     <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
     <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
@@ -128,25 +139,21 @@
     <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
     <div class="comet" style="top: 80%; left: -5%;"></div>
 
-    <!-- Charts and Time Summary -->
     <div class="relative z-10 max-w-6xl mx-auto py-10 px-4">
       <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <!-- Bar Chart -->
         <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
           <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
           <canvas id="hoursChart" class="h-full w-full"></canvas>
         </div>
 
-        <!-- Doughnut Chart -->
         <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
           <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
           <canvas id="progressChart" class="h-full w-full"></canvas>
         </div>
       </div>
 
-      <!-- Time Block Display -->
       <div class="mt-10 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 rounded-2xl shadow-lg text-white">
         <h3 class="text-2xl font-bold mb-4">🕒 Today's Session Summary</h3>
         <ul class="list-disc list-inside space-y-2">
@@ -157,7 +164,6 @@
         <div class="mt-4 text-sm opacity-80">Keep up the momentum, Manas! 🚀</div>
       </div>
 
-      <!-- Weekly Report Block -->
       <div class="mt-10 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 p-6 rounded-2xl shadow-lg text-white">
         <h3 class="text-2xl font-bold mb-4">📅 Weekly Study Report</h3>
         <ul class="list-disc list-inside space-y-2">
@@ -171,8 +177,12 @@
     </div>
   </div>
 
-  <!-- Charts Script -->
+  <!-- Script Enhancements -->
   <script>
+    document.getElementById('menu-btn').addEventListener('click', () => {
+      document.getElementById('mobile-menu').classList.toggle('hidden');
+    });
+
     const hoursCtx = document.getElementById('hoursChart').getContext('2d');
     new Chart(hoursCtx, {
       type: 'bar',
