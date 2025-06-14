@@ -1,156 +1,140 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-900 text-white">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ManasPlannerPro - Homepage</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          },
-          colors: {
-            accent: '#6366F1'
-          },
-          animation: {
-            orbit: 'orbit 20s linear infinite',
-            starFloat: 'starFloat 10s linear infinite',
-            cometZoom: 'cometZoom 12s linear infinite'
-          },
-          keyframes: {
-            orbit: {
-              '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
-              '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' }
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ManasPlannerPro - Homepage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif']
             },
-            starFloat: {
-              '0%': { transform: 'translateY(0)' },
-              '100%': { transform: 'translateY(-100vh)' }
+            colors: {
+              accent: '#6366F1'
             },
-            cometZoom: {
-              '0%': { transform: 'translate(0, 0)', opacity: 1 },
-              '100%': { transform: 'translate(100vw, -100vh)', opacity: 0 }
+            animation: {
+              orbit: 'orbit 20s linear infinite',
+              starFloat: 'starFloat 10s linear infinite',
+              cometZoom: 'cometZoom 12s linear infinite'
+            },
+            keyframes: {
+              orbit: {
+                '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
+                '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' }
+              },
+              starFloat: {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(-100vh)' }
+              },
+              cometZoom: {
+                '0%': { transform: 'translate(0, 0)', opacity: 1 },
+                '100%': { transform: 'translate(100vw, -100vh)', opacity: 0 }
+              }
             }
           }
         }
       }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #1e293b);
-      overflow-x: hidden;
-    }
-    .planet, .sun, .star, .comet {
-      position: absolute;
-    }
-    .sun {
-      background: yellow;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      margin: -40px;
-      z-index: 1;
-    }
-    .planet {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      animation: orbit linear infinite;
-      transform-origin: center center;
-      z-index: 1;
-    }
-    .star {
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: starFloat 10s linear infinite;
-    }
-    .comet {
-      width: 4px;
-      height: 4px;
-      background: cyan;
-      border-radius: 50%;
-      animation: cometZoom 12s linear infinite;
-      opacity: 0.7;
-    }
-  </style>
-</head>
-<body>
-  <script>
-    window.onload = () => {
-      for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.animationDuration = `${5 + Math.random() * 5}s`;
-        document.body.appendChild(star);
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at top, #0f172a, #1e293b);
+        overflow-x: hidden;
       }
-    };
-  </script>
-
-  <!-- Navigation Bar -->
-  <nav class="w-full fixed top-0 left-0 z-50 bg-gray-800 bg-opacity-90 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <div class="flex items-center">
-          <span class="text-white font-bold text-xl">ManasPlannerPro</span>
-        </div>
-        <div class="hidden md:flex space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
-          <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
-          <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
-          <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
-          <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
-        </div>
-        <!-- Mobile menu button -->
-        <div class="md:hidden">
-          <button id="menu-btn" class="text-white focus:outline-none">☰</button>
-        </div>
+      .planet, .sun, .star, .comet {
+        position: absolute;
+      }
+      .sun {
+        background: yellow;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        margin: -40px;
+        z-index: 1;
+      }
+      .planet {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        animation: orbit linear infinite;
+        transform-origin: center center;
+        z-index: 1;
+      }
+      .star {
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: starFloat 10s linear infinite;
+      }
+      .comet {
+        width: 4px;
+        height: 4px;
+        background: cyan;
+        border-radius: 50%;
+        animation: cometZoom 12s linear infinite;
+        opacity: 0.7;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Dark Mode & Export & Timer Controls -->
+    <div class="fixed top-4 right-4 z-50 flex gap-2">
+      <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">🌗 Toggle Mode</button>
+      <button onclick="exportPDF()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">📤 Export PDF</button>
+      <div class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow flex items-center">
+        ⏱️ Timer: <span id="timer" class="ml-2 font-bold">00:00:00</span>
       </div>
     </div>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1 bg-gray-800">
-      <a href="index.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Home</a>
-      <a href="calendar.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Calendar</a>
-      <a href="timer.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Timer</a>
-      <a href="todo.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">To-Do</a>
-      <a href="subjects.html" class="block text-gray-300 hover:text-white px-3 py-2 rounded-md text-base font-medium">Subjects</a>
+
+    <!-- Navbar -->
+    <nav class="w-full fixed top-0 left-0 z-40 bg-gray-800 bg-opacity-90 shadow-lg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <span class="text-white font-bold text-xl">ManasPlannerPro</span>
+          <div class="hidden md:flex space-x-4">
+            <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+            <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+            <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
+            <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
+            <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="pt-20 relative z-10">
+      <div class="sun"></div>
+      <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
+      <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
+      <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
+      <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
+      <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
+      <div class="comet" style="top: 80%; left: -5%;"></div>
     </div>
-  </nav>
 
-  <div class="pt-20">
-    <div class="sun"></div>
-    <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
-    <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
-    <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
-    <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
-    <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
-    <div class="comet" style="top: 80%; left: -5%;"></div>
-
-    <div class="relative z-10 max-w-6xl mx-auto py-10 px-4">
+    <main id="reportSection" class="relative z-20 max-w-6xl mx-auto py-10 px-4">
       <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
           <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-          <canvas id="hoursChart" class="h-full w-full"></canvas>
+          <canvas id="hoursChart"></canvas>
         </div>
 
         <div class="bg-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
           <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-          <canvas id="progressChart" class="h-full w-full"></canvas>
+          <canvas id="progressChart"></canvas>
         </div>
       </div>
 
@@ -174,61 +158,74 @@
         </ul>
         <div class="mt-4 text-sm opacity-80">Review your week and prepare for the next! 💡</div>
       </div>
-    </div>
-  </div>
+    </main>
 
-  <!-- Script Enhancements -->
-  <script>
-    document.getElementById('menu-btn').addEventListener('click', () => {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
-
-    const hoursCtx = document.getElementById('hoursChart').getContext('2d');
-    new Chart(hoursCtx, {
-      type: 'bar',
-      data: {
-        labels: ['Physics', 'Mathematics', 'Programming'],
-        datasets: [{
-          label: 'Hours Studied',
-          data: [1.5, 2, 3],
-          backgroundColor: ['#60A5FA', '#FBBF24', '#34D399']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
+    <script>
+      for (let i = 0; i < 100; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        star.style.animationDuration = `${5 + Math.random() * 5}s`;
+        document.body.appendChild(star);
       }
-    });
 
-    const progressCtx = document.getElementById('progressChart').getContext('2d');
-    new Chart(progressCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Physics', 'Mathematics', 'Programming'],
-        datasets: [{
-          label: 'Progress %',
-          data: [50, 75, 90],
-          backgroundColor: ['#60A5FA', '#FBBF24', '#34D399']
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              color: 'black'
+      const hoursCtx = document.getElementById('hoursChart').getContext('2d');
+      new Chart(hoursCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Physics', 'Mathematics', 'Programming'],
+          datasets: [{
+            label: 'Hours Studied',
+            data: [1.5, 2, 3],
+            backgroundColor: ['#60A5FA', '#FBBF24', '#34D399']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }
+      });
+
+      const progressCtx = document.getElementById('progressChart').getContext('2d');
+      new Chart(progressCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Physics', 'Mathematics', 'Programming'],
+          datasets: [{
+            label: 'Progress %',
+            data: [50, 75, 90],
+            backgroundColor: ['#60A5FA', '#FBBF24', '#34D399']
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { color: 'black' }
             }
           }
         }
+      });
+
+      let dark = true;
+      function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        dark = !dark;
       }
-    });
-  </script>
-</body>
+
+      function exportPDF() {
+        const element = document.getElementById('reportSection');
+        html2pdf().from(element).save('Manas_Study_Report.pdf');
+      }
+
+      let seconds = 0;
+      setInterval(() => {
+        seconds++;
+        const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
+      }, 1000);
+    </script>
+  </body>
 </html>
