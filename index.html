@@ -129,14 +129,24 @@
     <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
+      <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
         <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-        <canvas id="studyChart"></canvas>
+        <canvas id="studyChart" class="h-40"></canvas>
+        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+          <li>Physics: 1.5 hrs</li>
+          <li>Mathematics: 2 hrs</li>
+          <li>Programming: 3 hrs</li>
+        </ul>
       </div>
 
-      <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-64">
+      <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
         <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-        <canvas id="sessionChart"></canvas>
+        <canvas id="sessionChart" class="h-40"></canvas>
+        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+          <li>Physics Session: 50 mins</li>
+          <li>Math Session: 75 mins</li>
+          <li>Programming Session: 90 mins</li>
+        </ul>
       </div>
     </div>
 
