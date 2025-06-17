@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-900 text-white">
+<html lang="en" class="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ManasPlannerPro - Timer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ManasPlannerPro - To-Do List</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -17,177 +17,131 @@
             accent: '#6366F1'
           },
           animation: {
-            starFloat: 'starFloat 10s linear infinite',
-            rocketLaunch: 'rocketLaunch 3s ease-in-out infinite',
-            flameFlicker: 'flameFlicker 0.3s ease-in-out infinite'
+            starFloat: 'starFloat 10s linear infinite'
           },
           keyframes: {
             starFloat: {
               '0%': { transform: 'translateY(0)' },
               '100%': { transform: 'translateY(-100vh)' }
-            },
-            rocketLaunch: {
-              '0%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-10px)' },
-              '100%': { transform: 'translateY(0)' }
-            },
-            flameFlicker: {
-              '0%, 100%': { opacity: 0.8 },
-              '50%': { opacity: 1 }
             }
           }
         }
       }
-    }
+    };
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at top, #0f172a, #1e293b);
-      overflow: hidden;
+      overflow-x: hidden;
     }
     .star {
-      position: absolute;
       width: 2px;
       height: 2px;
       background: white;
       border-radius: 50%;
-      animation: starFloat 10s linear infinite;
       opacity: 0.8;
-    }
-    .rocket {
-      width: 80px;
-      animation: rocketLaunch 2s ease-in-out infinite;
-      position: relative;
-    }
-    .flame {
       position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 20px;
-      height: 30px;
-      background: radial-gradient(circle, orange 40%, red 100%);
-      border-radius: 50%;
-      animation: flameFlicker 0.3s ease-in-out infinite;
-      z-index: -1;
+      animation: starFloat 10s linear infinite;
     }
   </style>
 </head>
 <body class="text-white">
-  <nav class="flex justify-between items-center px-6 py-4 bg-gray-800 text-white shadow-md">
-    <div class="flex items-center space-x-3">
-      <span class="text-2xl font-extrabold">🚀 ManasPlannerPro</span>
+  <header class="w-full fixed top-0 left-0 z-40 bg-gray-800 bg-opacity-90 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <span class="text-white font-bold text-xl">ManasPlannerPro</span>
+        <div class="hidden md:flex space-x-4">
+          <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+          <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+          <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
+          <a href="todo.html" class="text-white px-3 py-2 rounded-md text-sm font-medium bg-accent">To-Do</a>
+          <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
+        </div>
+      </div>
     </div>
-    <ul class="hidden md:flex space-x-6 text-lg font-semibold">
-      <li><a href="index.html" class="hover:text-accent">Home</a></li>
-      <li><a href="todo.html" class="hover:text-accent">To-Do</a></li>
-      <li><a href="calendar.html" class="hover:text-accent">Calendar</a></li>
-      <li><a href="timer.html" class="text-accent underline">Timer</a></li>
-      <li><a href="subjects.html" class="hover:text-accent">Subjects</a></li>
-    </ul>
-    <button onclick="toggleDarkMode()" class="px-4 py-2 rounded bg-white text-gray-900 font-bold hover:bg-gray-200 transition">🌓</button>
-  </nav>
+  </header>
 
-  <main class="h-screen flex flex-col items-center justify-center text-center">
-    <h1 class="text-5xl font-extrabold mb-6">⏱️ Timer</h1>
-    <div id="timerDisplay" class="text-6xl font-bold mb-6">00:00</div>
-    <input id="countdownInput" type="number" placeholder="Enter minutes..." class="text-black mb-4 px-4 py-2 rounded" />
-    <div class="space-x-4">
-      <button onclick="startTimer()" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded font-bold">Start</button>
-      <button onclick="stopTimer()" class="bg-red-500 hover:bg-red-600 px-6 py-2 rounded font-bold">Stop</button>
-      <button onclick="resetTimer()" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded font-bold">Reset</button>
-    </div>
-    <div class="rocket mt-10">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Rocket_clipart.svg" alt="Rocket">
-      <div class="flame"></div>
+  <!-- Stars Background -->
+  <script>
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${5 + Math.random() * 5}s`;
+      document.body.appendChild(star);
+    }
+  </script>
+
+  <main class="pt-24 max-w-4xl mx-auto px-4">
+    <h1 class="text-3xl font-bold mb-6 text-center text-accent">📋 To-Do List</h1>
+
+    <div class="bg-gradient-to-br from-purple-500 via-pink-500 to-red-500 p-6 rounded-2xl shadow-lg">
+      <div class="flex flex-col sm:flex-row gap-4 mb-4">
+        <input id="taskInput" type="text" placeholder="Enter a task..." class="flex-1 p-3 rounded-lg text-black">
+        <select id="categorySelect" class="p-3 rounded-lg text-black">
+          <option value="General">General</option>
+          <option value="Urgent">Urgent</option>
+          <option value="Must-Do">Must-Do</option>
+        </select>
+        <button onclick="addTask()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg shadow">Add</button>
+      </div>
+      <ul id="taskList" class="space-y-3"></ul>
     </div>
   </main>
 
-  <footer class="text-center py-6 bg-gray-800 text-white absolute bottom-0 w-full">
-    <p class="text-sm">&copy; 2025 <strong class="text-accent">ManasPlannerPro</strong> | Countdown to success 🚀</p>
-  </footer>
-
-  <audio id="tick" src="https://www.soundjay.com/clock/sounds/clock-ticking-1.mp3" preload="auto"></audio>
-  <audio id="bell" src="https://www.soundjay.com/button/sounds/button-29.mp3" preload="auto"></audio>
-
   <script>
-    let timerInterval;
-    let seconds = 0;
-    let countdown = false;
+    const taskInput = document.getElementById('taskInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const taskList = document.getElementById('taskList');
 
-    function updateDisplay() {
-      const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
-      const secs = String(seconds % 60).padStart(2, '0');
-      document.getElementById("timerDisplay").innerText = `${mins}:${secs}`;
+    function addTask() {
+      const taskText = taskInput.value.trim();
+      const category = categorySelect.value;
+      if (!taskText) return;
+
+      const li = document.createElement('li');
+      li.className = 'flex justify-between items-center bg-white bg-opacity-10 backdrop-blur p-3 rounded-lg shadow';
+
+      li.innerHTML = `
+        <div>
+          <span class="font-bold text-accent">[${category}]</span> ${taskText}
+        </div>
+        <button onclick="removeTask(this)" class="text-red-500 hover:text-red-700 font-bold">✖</button>
+      `;
+
+      taskList.appendChild(li);
+      saveTasks();
+      taskInput.value = '';
     }
 
-    function startTimer() {
-      const inputVal = document.getElementById("countdownInput").value;
-      if (inputVal && !timerInterval) {
-        seconds = parseInt(inputVal) * 60;
-        countdown = true;
-      }
-
-      if (!timerInterval) {
-        const tick = document.getElementById("tick");
-        tick.loop = true;
-        tick.play();
-
-        timerInterval = setInterval(() => {
-          if (countdown) {
-            if (seconds > 0) {
-              seconds--;
-            } else {
-              clearInterval(timerInterval);
-              timerInterval = null;
-              document.getElementById("bell").play();
-              tick.pause();
-              tick.currentTime = 0;
-            }
-          } else {
-            seconds++;
-          }
-          updateDisplay();
-        }, 1000);
-      }
+    function removeTask(button) {
+      const li = button.parentElement;
+      taskList.removeChild(li);
+      saveTasks();
     }
 
-    function stopTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      document.getElementById("tick").pause();
+    function saveTasks() {
+      const tasks = Array.from(taskList.children).map(li => li.innerText);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    function resetTimer() {
-      stopTimer();
-      seconds = 0;
-      updateDisplay();
-      countdown = false;
+    function loadTasks() {
+      const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+      tasks.forEach(taskText => {
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center bg-white bg-opacity-10 backdrop-blur p-3 rounded-lg shadow';
+        li.innerHTML = `
+          <div>${taskText}</div>
+          <button onclick="removeTask(this)" class="text-red-500 hover:text-red-700 font-bold">✖</button>
+        `;
+        taskList.appendChild(li);
+      });
     }
 
-    function toggleDarkMode() {
-      const html = document.documentElement;
-      html.classList.toggle('dark');
-      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-    }
-
-    window.onload = () => {
-      if (localStorage.getItem('theme') === 'dark') {
-        document.documentElement.classList.add('dark');
-      }
-      updateDisplay();
-
-      for (let i = 0; i < 100; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.animationDuration = `${5 + Math.random() * 5}s`;
-        document.body.appendChild(star);
-      }
-    }
+    window.onload = loadTasks;
   </script>
 </body>
 </html>
