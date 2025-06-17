@@ -1,225 +1,470 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ManasPlannerPro - Home</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif']
-          },
-          colors: {
-            accent: '#6366F1'
-          },
-          animation: {
-            orbit: 'orbit 20s linear infinite',
-            starFloat: 'starFloat 10s linear infinite',
-            cometZoom: 'cometZoom 12s linear infinite'
-          },
-          keyframes: {
-            orbit: {
-              '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
-              '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' }
-            },
-            starFloat: {
-              '0%': { transform: 'translateY(0)' },
-              '100%': { transform: 'translateY(-100vh)' }
-            },
-            cometZoom: {
-              '0%': { transform: 'translate(0, 0)', opacity: 1 },
-              '100%': { transform: 'translate(100vw, -100vh)', opacity: 0 }
-            }
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManasPlannerPro - Ultimate Study Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-      }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top, #0f172a, #1e293b);
-      overflow-x: hidden;
-    }
-    .planet, .sun, .star, .comet {
-      position: absolute;
-    }
-    .sun {
-      background: yellow;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      margin: -40px;
-      z-index: 1;
-    }
-    .planet {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      animation: orbit linear infinite;
-      transform-origin: center center;
-      z-index: 1;
-    }
-    .star {
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.8;
-      animation: starFloat 10s linear infinite;
-    }
-    .comet {
-      width: 4px;
-      height: 4px;
-      background: cyan;
-      border-radius: 50%;
-      animation: cometZoom 12s linear infinite;
-      opacity: 0.7;
-    }
-    #studyChart, #sessionChart {
-      max-height: 100% !important;
-      object-fit: contain;
-    }
-  </style>
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+        }
+        .animate-card {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        .animate-delay-1 { animation-delay: 0.2s; }
+        .animate-delay-2 { animation-delay: 0.4s; }
+        .progress-bar {
+            transition: width 0.6s ease;
+        }
+        .motivation-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            font-weight: 600;
+        }
+    </style>
 </head>
-<body>
-  <div class="fixed top-4 right-4 z-50 flex flex-wrap gap-2">
-    <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">🌗 Toggle Mode</button>
-    <button onclick="exportPDF()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">📤 Export PDF</button>
-    <div class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow flex items-center">
-      ⏱️ Timer: <span id="timer" class="ml-2 font-bold">00:00:00</span>
+<body class="bg-gray-50 p-4 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header with Navigation -->
+        <header class="mb-8 animate-card">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center">
+                    <span class="bg-blue-500 text-white p-2 rounded-lg mr-3">MP</span>
+                    ManasPlannerPro
+                </h1>
+                <div class="flex space-x-4">
+                    <button id="exportBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all transform hover:scale-105 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                        Export PDF
+                    </button>
+                    <div class="text-gray-500 font-mono bg-gray-100 px-3 py-2 rounded-lg flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                        </svg>
+                        <span id="timerDisplay">00:00:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-8 mt-6 border-b border-gray-200">
+                <button class="tab-btn pb-2 px-1 text-gray-600 hover:text-blue-500 transition" data-tab="dashboard">Dashboard</button>
+                <button class="tab-btn pb-2 px-1 text-gray-600 hover:text-blue-500 transition" data-tab="subjects">Subjects</button>
+                <button class="tab-btn pb-2 px-1 text-gray-600 hover:text-blue-500 transition" data-tab="todo">To-Do</button>
+                <button class="tab-btn pb-2 px-1 text-gray-600 hover:text-blue-500 transition" data-tab="timer">Focus Timer</button>
+            </nav>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column - Dashboard/Subjects/Todo/Timer -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Dashboard Tab Content -->
+                <div id="dashboard-tab" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Study Hours Card -->
+                        <div class="status-card animate-card animate-delay-1">
+                            <div class="status-header p-5 rounded-t-xl">
+                                <h2 class="text-xl font-semibold text-gray-700">📈 Study Hours</h2>
+                                <p class="text-sm text-gray-500 mt-1">Body Hours (Last Week)</p>
+                            </div>
+                            <div class="p-5">
+                                <table class="data-table w-full">
+                                    <thead>
+                                        <tr class="text-left text-gray-500 text-sm">
+                                            <th class="pb-2">Name</th>
+                                            <th class="pb-2">Physics</th>
+                                            <th class="pb-2">Observer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-gray-700">
+                                        <tr class="border-b border-gray-100">
+                                            <td class="py-3">Physics</td>
+                                            <td>1.5 hrs</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-100">
+                                            <td class="py-3">Mathematics</td>
+                                            <td>2 hrs</td>
+                                            <td>-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-3">Programming</td>
+                                            <td>3 hrs</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Session Time Card -->
+                        <div class="status-card animate-card animate-delay-2">
+                            <div class="status-header p-5 rounded-t-xl bg-gradient-to-r from-green-50 to-teal-50">
+                                <h2 class="text-xl font-semibold text-gray-700">⏳ Session Time</h2>
+                            </div>
+                            <div class="p-5">
+                                <ul class="space-y-3">
+                                    <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                        <span class="flex items-center">
+                                            <span class="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
+                                            <span>Physics Session</span>
+                                        </span>
+                                        <span class="font-medium">50 mins</span>
+                                    </li>
+                                    <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                        <span class="flex items-center">
+                                            <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span>
+                                            <span>Math Session</span>
+                                        </span>
+                                        <span class="font-medium">75 mins</span>
+                                    </li>
+                                    <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                        <span class="flex items-center">
+                                            <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
+                                            <span>Programming Session</span>
+                                        </span>
+                                        <span class="font-medium">90 mins</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Subjects Tab Content -->
+                <div id="subjects-tab" class="tab-content hidden">
+                    <div class="status-card p-5">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">📚 My Subjects</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                <h3 class="font-medium text-blue-800">Physics</h3>
+                                <p class="text-sm text-blue-600 mt-1">5 topics remaining</p>
+                                <div class="mt-2 bg-blue-100 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg border border-purple-100">
+                                <h3 class="font-medium text-purple-800">Mathematics</h3>
+                                <p class="text-sm text-purple-600 mt-1">3 chapters left</p>
+                                <div class="mt-2 bg-purple-100 rounded-full h-2">
+                                    <div class="bg-purple-500 h-2 rounded-full" style="width: 40%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                                <h3 class="font-medium text-green-800">Programming</h3>
+                                <p class="text-sm text-green-600 mt-1">2 projects due</p>
+                                <div class="mt-2 bg-green-100 rounded-full h-2">
+                                    <div class="bg-green-500 h-2 rounded-full" style="width: 30%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- To-Do Tab Content -->
+                <div id="todo-tab" class="tab-content hidden">
+                    <div class="status-card p-5">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">✅ Today's Tasks</h2>
+                        <div class="space-y-3">
+                            <div class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <div class="flex-1">
+                                    <p class="font-medium">Complete Physics chapter 5</p>
+                                    <p class="text-sm text-gray-500">Due tomorrow</p>
+                                </div>
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">High</span>
+                            </div>
+                            <div class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <div class="flex-1">
+                                    <p class="font-medium">Solve math problems set</p>
+                                    <p class="text-sm text-gray-500">10 problems remaining</p>
+                                </div>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">Medium</span>
+                            </div>
+                            <div class="flex items-start">
+                                <input type="checkbox" class="mt-1 mr-3 h-5 w-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+                                <div class="flex-1">
+                                    <p class="font-medium">Code review for project</p>
+                                    <p class="text-sm text-gray-500">Team meeting at 4pm</p>
+                                </div>
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded">Urgent</span>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex">
+                            <input type="text" placeholder="Add new task..." class="flex-1 border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timer Tab Content -->
+                <div id="timer-tab" class="tab-content hidden">
+                    <div class="status-card p-5">
+                        <h2 class="text-xl font-semibold text-gray-700 mb-4">⏱️ Focus Timer</h2>
+                        <div class="text-center py-8">
+                            <div class="text-5xl font-mono font-bold text-gray-800 mb-6" id="focusTimer">25:00</div>
+                            <div class="flex justify-center space-x-4">
+                                <button id="startTimer" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                                    </svg>
+                                    Start
+                                </button>
+                                <button id="resetTimer" class="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+                                    </svg>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h3 class="font-medium text-gray-700 mb-2">Timer Presets</h3>
+                            <div class="flex space-x-2">
+                                <button class="timer-preset bg-blue-100 text-blue-800 px-3 py-1 rounded hover:bg-blue-200">25:00</button>
+                                <button class="timer-preset bg-blue-100 text-blue-800 px-3 py-1 rounded hover:bg-blue-200">50:00</button>
+                                <button class="timer-preset bg-blue-100 text-blue-800 px-3 py-1 rounded hover:bg-blue-200">15:00</button>
+                                <button class="timer-preset bg-blue-100 text-blue-800 px-3 py-1 rounded hover:bg-blue-200">5:00</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Motivation & Stats -->
+            <div class="space-y-6">
+                <!-- Motivation Card -->
+                <div class="motivation-card p-5 rounded-xl shadow-sm animate-card">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-3">💪 Daily Motivation</h2>
+                    <div class="text-center py-4">
+                        <p id="motivationQuote" class="text-lg italic text-gray-700">"The expert in anything was once a beginner."</p>
+                        <p class="text-sm text-gray-500 mt-2">- Helen Hayes</p>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <button id="newQuoteBtn" class="bg-white text-blue-500 px-4 py-2 rounded-lg border border-blue-200 hover:bg-blue-50">
+                            New Motivation
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Weekly Progress -->
+                <div class="status-card p-5 animate-card animate-delay-1">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-3">📊 Weekly Progress</h2>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-blue-500">15.5</p>
+                            <p class="text-xs text-gray-500">Study Hours</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-green-500">87%</p>
+                            <p class="text-xs text-gray-500">Completion</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-purple-500">23</p>
+                            <p class="text-xs text-gray-500">Tasks Done</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="status-card p-5 animate-card animate-delay-2">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-3">⚡ Quick Actions</h2>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button class="bg-indigo-50 text-indigo-700 p-3 rounded-lg flex flex-col items-center hover:bg-indigo-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            <span class="text-sm">New Task</span>
+                        </button>
+                        <button class="bg-green-50 text-green-700 p-3 rounded-lg flex flex-col items-center hover:bg-green-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-sm">Start Timer</span>
+                        </button>
+                        <button class="bg-blue-50 text-blue-700 p-3 rounded-lg flex flex-col items-center hover:bg-blue-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            <span class="text-sm">Add Note</span>
+                        </button>
+                        <button class="bg-purple-50 text-purple-700 p-3 rounded-lg flex flex-col items-center hover:bg-purple-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <span class="text-sm">Resources</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-  </div>
 
-  <header class="w-full fixed top-0 left-0 z-40 bg-gray-800 bg-opacity-90 shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <span class="text-white font-bold text-xl">ManasPlannerPro</span>
-        <div class="hidden md:flex space-x-4">
-          <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
-          <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
-          <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
-          <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
-          <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
-        </div>
-      </div>
-    </div>
-  </header>
+    <script>
+        // Tab Navigation
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active tab style
+                document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('tab-active', 'text-blue-500'));
+                btn.classList.add('tab-active', 'text-blue-500');
+                
+                // Hide all tab contents
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show selected tab content
+                const tabId = btn.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
 
-  <div class="pt-20 relative z-10">
-    <div class="sun"></div>
-    <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
-    <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
-    <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
-    <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
-    <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
-    <div class="comet" style="top: 80%; left: -5%;"></div>
-  </div>
+        // Set first tab as active by default
+        document.querySelector('.tab-btn').click();
 
-  <main id="reportSection" class="relative z-20 max-w-6xl mx-auto py-10 px-4">
-    <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Study Hours Chart -->
-      <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
-        <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-        <div class="relative h-64">
-          <canvas id="studyChart"></canvas>
-        </div>
-        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-          <li>Physics: 1.5 hrs</li>
-          <li>Mathematics: 2 hrs</li>
-          <li>Programming: 3 hrs</li>
-        </ul>
-      </div>
-
-      <!-- Session Time Chart -->
-      <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
-        <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-        <div class="relative h-64">
-          <canvas id="sessionChart"></canvas>
-        </div>
-        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-          <li>Physics Session: 50 mins</li>
-          <li>Math Session: 75 mins</li>
-          <li>Programming Session: 90 mins</li>
-        </ul>
-      </div>
-    </div>
-  </main>
-
-  <script>
-    for (let i = 0; i < 100; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.animationDuration = `${5 + Math.random() * 5}s`;
-      document.body.appendChild(star);
-    }
-
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-    }
-
-    function exportPDF() {
-      const element = document.getElementById('reportSection');
-      html2pdf().from(element).save('Manas_Study_Report.pdf');
-    }
-
-    let seconds = 0;
-    setInterval(() => {
-      seconds++;
-      const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-      const secs = String(seconds % 60).padStart(2, '0');
-      document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
-    }, 1000);
-
-    const ctx = document.getElementById('studyChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Maths', 'Physics', 'Chemistry', 'CS', 'Biology'],
-        datasets: [{
-          label: 'Study Hours (Last Week)',
-          data: [10, 8, 6, 7, 5],
-          backgroundColor: '#6366F1'
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: '#fff'
-            }
-          },
-          x: {
-            ticks: {
-              color: '#fff'
-            }
-          }
-        },
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff'
-            }
-          }
+        // Timer Logic
+        let timerInterval;
+        let secondsLeft = 1500; // 25 minutes
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(secondsLeft / 60);
+            const seconds = secondsLeft % 60;
+            document.getElementById('focusTimer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
-      }
-    });
-  </script>
+        
+        document.getElementById('startTimer').addEventListener('click', () => {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    if (secondsLeft > 0) {
+                        secondsLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        clearInterval(timerInterval);
+                        alert('Time is up! Take a break.');
+                    }
+                }, 1000);
+                document.getElementById('startTimer').innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Pause`;
+            } else {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                document.getElementById('startTimer').innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                    Start`;
+            }
+        });
+        
+        document.getElementById('resetTimer').addEventListener('click', () => {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            secondsLeft = 1500;
+            updateTimerDisplay();
+            document.getElementById('startTimer').innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                </svg>
+                Start`;
+        });
+        
+        // Timer presets
+        document.querySelectorAll('.timer-preset').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const time = btn.textContent.split(':');
+                secondsLeft = parseInt(time[0]) * 60 + parseInt(time[1]);
+                updateTimerDisplay();
+            });
+        });
+
+        // Motivation Quotes
+        const quotes = [
+            {text: "The secret of getting ahead is getting started.", author: "Mark Twain"},
+            {text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar"},
+            {text: "Success is the sum of small efforts, repeated day in and day out.", author: "Robert Collier"},
+            {text: "The expert in anything was once a beginner.", author: "Helen Hayes"},
+            {text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt"},
+            {text: "Your limitation—it's only your imagination.", author: "Unknown"},
+            {text: "Push yourself, because no one else is going to do it for you.", author: "Unknown"},
+            {text: "The harder you work for something, the greater you'll feel when you achieve it.", author: "Unknown"}
+        ];
+        
+        function showRandomQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('motivationQuote').textContent = `"${randomQuote.text}"`;
+            document.querySelector('#motivationCard p.text-sm').textContent = `- ${randomQuote.author}`;
+        }
+        
+        document.getElementById('newQuoteBtn').addEventListener('click', showRandomQuote);
+        showRandomQuote(); // Show initial quote
+
+        // Initialize Progress Chart
+        const progressCtx = document.getElementById('progressChart').getContext('2d');
+        new Chart(progressCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Study Hours',
+                    data: [2, 3, 1.5, 4, 2.5, 1, 1.5],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+
+        // Real-time clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('timerDisplay').textContent = 
+                now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
 </body>
 </html>
