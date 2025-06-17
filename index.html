@@ -1,29 +1,225 @@
-<!-- ✂️ Inside your main content -->
-
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <!-- Study Hours Chart -->
-  <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
-    <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-    <div class="relative h-64">
-      <canvas id="studyChart"></canvas>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ManasPlannerPro - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          },
+          colors: {
+            accent: '#6366F1'
+          },
+          animation: {
+            orbit: 'orbit 20s linear infinite',
+            starFloat: 'starFloat 10s linear infinite',
+            cometZoom: 'cometZoom 12s linear infinite'
+          },
+          keyframes: {
+            orbit: {
+              '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
+              '100%': { transform: 'rotate(360deg) translateX(150px) rotate(-360deg)' }
+            },
+            starFloat: {
+              '0%': { transform: 'translateY(0)' },
+              '100%': { transform: 'translateY(-100vh)' }
+            },
+            cometZoom: {
+              '0%': { transform: 'translate(0, 0)', opacity: 1 },
+              '100%': { transform: 'translate(100vw, -100vh)', opacity: 0 }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #0f172a, #1e293b);
+      overflow-x: hidden;
+    }
+    .planet, .sun, .star, .comet {
+      position: absolute;
+    }
+    .sun {
+      background: yellow;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      margin: -40px;
+      z-index: 1;
+    }
+    .planet {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      animation: orbit linear infinite;
+      transform-origin: center center;
+      z-index: 1;
+    }
+    .star {
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: starFloat 10s linear infinite;
+    }
+    .comet {
+      width: 4px;
+      height: 4px;
+      background: cyan;
+      border-radius: 50%;
+      animation: cometZoom 12s linear infinite;
+      opacity: 0.7;
+    }
+    #studyChart, #sessionChart {
+      max-height: 100% !important;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <div class="fixed top-4 right-4 z-50 flex flex-wrap gap-2">
+    <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">🌗 Toggle Mode</button>
+    <button onclick="exportPDF()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">📤 Export PDF</button>
+    <div class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow flex items-center">
+      ⏱️ Timer: <span id="timer" class="ml-2 font-bold">00:00:00</span>
     </div>
-    <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-      <li>Physics: 1.5 hrs</li>
-      <li>Mathematics: 2 hrs</li>
-      <li>Programming: 3 hrs</li>
-    </ul>
   </div>
 
-  <!-- Session Time Chart -->
-  <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
-    <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-    <div class="relative h-64">
-      <canvas id="sessionChart"></canvas>
+  <header class="w-full fixed top-0 left-0 z-40 bg-gray-800 bg-opacity-90 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <span class="text-white font-bold text-xl">ManasPlannerPro</span>
+        <div class="hidden md:flex space-x-4">
+          <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+          <a href="calendar.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Calendar</a>
+          <a href="timer.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Timer</a>
+          <a href="todo.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">To-Do</a>
+          <a href="subjects.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Subjects</a>
+        </div>
+      </div>
     </div>
-    <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-      <li>Physics Session: 50 mins</li>
-      <li>Math Session: 75 mins</li>
-      <li>Programming Session: 90 mins</li>
-    </ul>
+  </header>
+
+  <div class="pt-20 relative z-10">
+    <div class="sun"></div>
+    <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
+    <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
+    <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
+    <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
+    <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
+    <div class="comet" style="top: 80%; left: -5%;"></div>
   </div>
-</div>
+
+  <main id="reportSection" class="relative z-20 max-w-6xl mx-auto py-10 px-4">
+    <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Study Hours Chart -->
+      <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+        <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
+        <div class="relative h-64">
+          <canvas id="studyChart"></canvas>
+        </div>
+        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+          <li>Physics: 1.5 hrs</li>
+          <li>Mathematics: 2 hrs</li>
+          <li>Programming: 3 hrs</li>
+        </ul>
+      </div>
+
+      <!-- Session Time Chart -->
+      <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+        <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
+        <div class="relative h-64">
+          <canvas id="sessionChart"></canvas>
+        </div>
+        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+          <li>Physics Session: 50 mins</li>
+          <li>Math Session: 75 mins</li>
+          <li>Programming Session: 90 mins</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.animationDuration = `${5 + Math.random() * 5}s`;
+      document.body.appendChild(star);
+    }
+
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function exportPDF() {
+      const element = document.getElementById('reportSection');
+      html2pdf().from(element).save('Manas_Study_Report.pdf');
+    }
+
+    let seconds = 0;
+    setInterval(() => {
+      seconds++;
+      const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const secs = String(seconds % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
+    }, 1000);
+
+    const ctx = document.getElementById('studyChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Maths', 'Physics', 'Chemistry', 'CS', 'Biology'],
+        datasets: [{
+          label: 'Study Hours (Last Week)',
+          data: [10, 8, 6, 7, 5],
+          backgroundColor: '#6366F1'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              color: '#fff'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#fff'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
