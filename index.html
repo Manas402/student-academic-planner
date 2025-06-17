@@ -41,7 +41,6 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -92,14 +91,6 @@
   </style>
 </head>
 <body>
-  <div class="fixed top-4 right-4 z-50 flex flex-wrap gap-2">
-    <button onclick="toggleDarkMode()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow">🌗 Toggle Mode</button>
-    <button onclick="exportPDF()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">📤 Export PDF</button>
-    <div class="bg-gray-800 text-white px-4 py-2 rounded-lg shadow flex items-center">
-      ⏱️ Timer: <span id="timer" class="ml-2 font-bold">00:00:00</span>
-    </div>
-  </div>
-
   <header class="w-full fixed top-0 left-0 z-40 bg-gray-800 bg-opacity-90 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
@@ -115,46 +106,53 @@
     </div>
   </header>
 
-  <div class="pt-20 relative z-10">
-    <div class="sun"></div>
-    <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
-    <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
-    <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
-    <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
-    <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
-    <div class="comet" style="top: 80%; left: -5%;"></div>
+  <div class="pt-24 relative z-10 grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-6 px-4">
+    <aside class="hidden md:block col-span-1 text-white space-y-4">
+      <div class="bg-gray-800 p-4 rounded-lg shadow">“Success is not final, failure is not fatal: It is the courage to continue that counts.”</div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow">“The secret of getting ahead is getting started.”</div>
+    </aside>
+
+    <main id="reportSection" class="col-span-1 md:col-span-2">
+      <div class="sun"></div>
+      <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
+      <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
+      <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
+      <div class="planet bg-yellow-400" style="animation-duration: 25s; animation-delay: 3s;"></div>
+      <div class="planet bg-purple-400" style="animation-duration: 30s; animation-delay: 4s;"></div>
+      <div class="comet" style="top: 80%; left: -5%;"></div>
+
+      <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+          <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
+          <div class="relative h-64 overflow-hidden">
+            <canvas id="studyChart"></canvas>
+          </div>
+          <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+            <li>Physics: 1.5 hrs</li>
+            <li>Mathematics: 2 hrs</li>
+            <li>Programming: 3 hrs</li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+          <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
+          <div class="relative h-64 overflow-hidden">
+            <canvas id="sessionChart"></canvas>
+          </div>
+          <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
+            <li>Physics Session: 50 mins</li>
+            <li>Math Session: 75 mins</li>
+            <li>Programming Session: 90 mins</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <aside class="hidden md:block col-span-1 text-white space-y-4">
+      <div class="bg-gray-800 p-4 rounded-lg shadow">“Push yourself, because no one else is going to do it for you.”</div>
+      <div class="bg-gray-800 p-4 rounded-lg shadow">“Dream it. Wish it. Do it.”</div>
+    </aside>
   </div>
-
-  <main id="reportSection" class="relative z-20 max-w-6xl mx-auto py-10 px-4">
-    <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Study Hours Chart -->
-      <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
-        <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-        <div class="relative h-64">
-          <canvas id="studyChart"></canvas>
-        </div>
-        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-          <li>Physics: 1.5 hrs</li>
-          <li>Mathematics: 2 hrs</li>
-          <li>Programming: 3 hrs</li>
-        </ul>
-      </div>
-
-      <!-- Session Time Chart -->
-      <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
-        <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-        <div class="relative h-64">
-          <canvas id="sessionChart"></canvas>
-        </div>
-        <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
-          <li>Physics Session: 50 mins</li>
-          <li>Math Session: 75 mins</li>
-          <li>Programming Session: 90 mins</li>
-        </ul>
-      </div>
-    </div>
-  </main>
 
   <script>
     for (let i = 0; i < 100; i++) {
@@ -166,57 +164,48 @@
       document.body.appendChild(star);
     }
 
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-    }
-
-    function exportPDF() {
-      const element = document.getElementById('reportSection');
-      html2pdf().from(element).save('Manas_Study_Report.pdf');
-    }
-
-    let seconds = 0;
-    setInterval(() => {
-      seconds++;
-      const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
-      const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
-      const secs = String(seconds % 60).padStart(2, '0');
-      document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
-    }, 1000);
-
-    const ctx = document.getElementById('studyChart').getContext('2d');
-    new Chart(ctx, {
+    new Chart(document.getElementById('studyChart'), {
       type: 'bar',
       data: {
         labels: ['Maths', 'Physics', 'Chemistry', 'CS', 'Biology'],
         datasets: [{
           label: 'Study Hours (Last Week)',
           data: [10, 8, 6, 7, 5],
-          backgroundColor: '#6366F1'
+          backgroundColor: ['#F87171', '#60A5FA', '#34D399', '#FBBF24', '#A78BFA']
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              color: '#fff'
-            }
-          },
-          x: {
-            ticks: {
-              color: '#fff'
-            }
-          }
+          y: { beginAtZero: true, ticks: { color: '#fff' } },
+          x: { ticks: { color: '#fff' } }
         },
         plugins: {
-          legend: {
-            labels: {
-              color: '#fff'
-            }
-          }
+          legend: { labels: { color: '#fff' } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('sessionChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Physics', 'Math', 'Programming'],
+        datasets: [{
+          label: 'Session Time (mins)',
+          data: [50, 75, 90],
+          backgroundColor: ['#F472B6', '#34D399', '#60A5FA']
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, ticks: { color: '#fff' } },
+          x: { ticks: { color: '#fff' } }
+        },
+        plugins: {
+          legend: { labels: { color: '#fff' } }
         }
       }
     });
