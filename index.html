@@ -47,18 +47,8 @@
       background: radial-gradient(circle at top, #0f172a, #1e293b);
       overflow-x: hidden;
     }
-    .planet, .sun, .star, .comet {
+    .planet, .star, .comet {
       position: absolute;
-    }
-    .sun {
-      background: yellow;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      top: 50%;
-      left: 50%;
-      margin: -40px;
-      z-index: 1;
     }
     .planet {
       width: 40px;
@@ -84,10 +74,6 @@
       animation: cometZoom 12s linear infinite;
       opacity: 0.7;
     }
-    #studyChart, #sessionChart {
-      max-height: 100% !important;
-      object-fit: contain;
-    }
   </style>
 </head>
 <body>
@@ -106,14 +92,13 @@
     </div>
   </header>
 
-  <div class="pt-24 relative z-10 grid grid-cols-1 md:grid-cols-3 max-w-7xl mx-auto gap-6 px-4">
+  <div class="pt-24 relative z-10 grid grid-cols-1 md:grid-cols-4 max-w-7xl mx-auto gap-6 px-4">
     <aside class="hidden md:block col-span-1 text-white space-y-4">
       <div class="bg-gray-800 p-4 rounded-lg shadow">“Success is not final, failure is not fatal: It is the courage to continue that counts.”</div>
       <div class="bg-gray-800 p-4 rounded-lg shadow">“The secret of getting ahead is getting started.”</div>
     </aside>
 
-    <main id="reportSection" class="col-span-1 md:col-span-2">
-      <div class="sun"></div>
+    <main id="reportSection" class="col-span-2 md:col-span-3">
       <div class="planet bg-blue-400" style="animation-duration: 10s;"></div>
       <div class="planet bg-red-400" style="animation-duration: 15s; animation-delay: 1s;"></div>
       <div class="planet bg-green-400" style="animation-duration: 20s; animation-delay: 2s;"></div>
@@ -122,27 +107,35 @@
       <div class="comet" style="top: 80%; left: -5%;"></div>
 
       <h1 class="text-4xl font-bold text-center mb-10 text-accent">🚀 Manas Study Tracker</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-gradient-to-br from-blue-100 via-indigo-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Study Hours -->
+        <div class="bg-gradient-to-br from-pink-100 via-blue-100 to-purple-100 text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
           <h2 class="text-xl font-semibold mb-4">📈 Study Hours</h2>
-          <div class="relative h-64 overflow-hidden">
-            <canvas id="studyChart"></canvas>
-          </div>
+          <div class="relative h-64"><canvas id="studyChart"></canvas></div>
           <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
             <li>Physics: 1.5 hrs</li>
             <li>Mathematics: 2 hrs</li>
             <li>Programming: 3 hrs</li>
           </ul>
         </div>
-        <div class="bg-gradient-to-br from-green-100 via-yellow-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto overflow-hidden">
+        <!-- Session Time -->
+        <div class="bg-gradient-to-br from-yellow-100 via-green-100 to-white text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
           <h2 class="text-xl font-semibold mb-4">⏳ Session Time</h2>
-          <div class="relative h-64 overflow-hidden">
-            <canvas id="sessionChart"></canvas>
-          </div>
+          <div class="relative h-64"><canvas id="sessionChart"></canvas></div>
           <ul class="mt-4 list-disc list-inside text-sm text-gray-700 dark:text-gray-300 space-y-1">
             <li>Physics Session: 50 mins</li>
             <li>Math Session: 75 mins</li>
             <li>Programming Session: 90 mins</li>
+          </ul>
+        </div>
+        <!-- Assignments Done -->
+        <div class="bg-gradient-to-br from-teal-100 via-cyan-100 to-blue-100 text-gray-900 rounded-2xl p-6 shadow-xl h-auto">
+          <h2 class="text-xl font-semibold mb-4">📘 Assignments Done</h2>
+          <div class="relative h-64"><canvas id="assignmentChart"></canvas></div>
+          <ul class="mt-4 text-sm text-gray-700 dark:text-gray-300 space-y-1">
+            <li>Maths: 3</li>
+            <li>Physics: 2</li>
+            <li>CS: 4</li>
           </ul>
         </div>
       </div>
@@ -178,11 +171,11 @@
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          y: { beginAtZero: true, ticks: { color: '#fff' } },
-          x: { ticks: { color: '#fff' } }
+          y: { beginAtZero: true, ticks: { color: '#000' } },
+          x: { ticks: { color: '#000' } }
         },
         plugins: {
-          legend: { labels: { color: '#fff' } }
+          legend: { labels: { color: '#000' } }
         }
       }
     });
@@ -201,11 +194,31 @@
         responsive: true,
         maintainAspectRatio: false,
         scales: {
-          y: { beginAtZero: true, ticks: { color: '#fff' } },
-          x: { ticks: { color: '#fff' } }
+          y: { beginAtZero: true, ticks: { color: '#000' } },
+          x: { ticks: { color: '#000' } }
         },
         plugins: {
-          legend: { labels: { color: '#fff' } }
+          legend: { labels: { color: '#000' } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('assignmentChart'), {
+      type: 'pie',
+      data: {
+        labels: ['Maths', 'Physics', 'CS'],
+        datasets: [{
+          data: [3, 2, 4],
+          backgroundColor: ['#3B82F6', '#F59E0B', '#10B981']
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: '#000', font: { size: 14 } }
+          }
         }
       }
     });
